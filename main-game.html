@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>main-game</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#cal").click(function(){
+		var drawdate = $("#draw_date").val();
+		var codeloto = $("#l_code").val();
+		var bet = $("#bettype").val();
+		var digit1 = $("#d1").val();
+		var digit2 = $("#d2").val();
+		var digit3 = $("#d3").val();
+		var digit4 = $("#d4").val();
+			$(".showerror").show();
+	$(".showerror").html("You have to login to view the result.");
+		});
+});
+</script>
+
+
+<script type="text/javascript">
+function autotab(current,to){
+    if (current.getAttribute && 
+      current.value.length==current.getAttribute("maxlength")) {
+        to.focus() 
+        }
+}
+</script>
+
+<style>
+.navbar-inverse .navbar-nav > li > a {
+    font-family: 'Open Sans';
+    color: #fff;
+    padding: 15px 24px;
+    font-weight: normal;
+    font-size: 18px;
+}
+</style>
+</head>
+<body>
+<div class="page-head">
+  <div class="container-fluid head-bg">
+    <div class="container">
+      <div class="col-md-6 col-sm-6"><a href="index.php"><img src="images/logo.png" alt=""class="img-responsive "></a></div>
+      <!-- end of col-md-6-->
+      <div class="col-md-6 col-sm-6">
+        <div class=" pl-right-text">
+                  <p align="right">
+          <span class="join-text"><a href="member-registration.php">Join in</a></span>
+          <span  style="color:#ff0202"> |</span>
+          <span class="join-text"><a href="login.php">Login</a></span>
+          </p>
+                    <p class="phone-number"><span><img src="images/email.png" height="16" width="30" alt="" style="padding-right:10px;"></span>companyname@gmail.com</p>
+          <p class="phone-number"><span><img src="images/clock.png" height="16" width="30" alt="" style="padding-right:10px;"></span>Indonesia, 24 Nov 2015 | 02:10:25</p>
+        </div>
+      </div>
+      <!-- end of col-md-6-->
+    </div>
+    <!-- end of container -->
+  </div>
+  <!-- end of container-fluid head-bg -->
+  <div class="container-fluid  menu-area">
+    <div class="navbar navbar-inverse my-navbar-inverse menu-area">
+      <div class="col-md-10 col-md-offset-1">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav" >
+            <li><a href="index.php">Home</a></li>
+            <li class="mtop">|</li>
+            <li><a href="about-us.php">About Us</a></li>
+            <li class="mtop">|</li>
+            <li><a href="purchase-lottery.php">Purchase Lottery</a></li>
+            <li class="mtop">|</li>
+             <li><a href="purchase-lottery.php">Game</a></li>
+              <li class="mtop">|</li>
+             <li><a href="result.php">4d Results</a></li>
+            <li class="mtop">|</li>
+            <li><a href="#">How it works</a></li>
+            <li class="mtop">|</li>
+           
+            <li><a href="#"> Contact us</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!--  end of navbar navbar-inverse my-navbar-inverse -->
+  </div>
+  <!--end-of container-fluid menu-->
+</div>
+<!--end of page head!-->
+<div class="clear"></div>
+<div class="container-fluid main-body-area  menu-padding">
+  <div class="container"> 
+  <div class="col-md-12  scroll-text-area  rdc-padding">
+      <div class="col-md-2 arrow-right">
+        <p style="margin-top:25px; color:#fff;">Information</p>
+      </div>
+      <div class="col-md-10 scr-pd-left">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor Aenean massa.</p>
+      </div>
+    </div>
+    <!--Start of game Page-->
+    <div class="col-md-12 mrg-top-20 game-page-area" >
+    <div class="col-md-3 rdc-padding">
+    <div class="col-md-12">
+    <div class="side-bord-area">
+    <div class="side-box">
+   
+    <table class="table " style="margin-bottom:5px;">
+    
+    <tbody>
+      <tr>
+        <td>Hallo </td>
+         <td>:</td>        
+        <td>Player Name</td>      
+      </tr>   
+      <tr>
+        <td>Balance </td>
+         <td>:</td>        
+        <td>Rs. 200</td>      
+      </tr>   
+      <tr>
+        <td>Level </td>
+         <td>:</td>        
+        <td>5</td>
+      </tr>
+    </tbody>    
+  </table>
+  <div class="dotted-border"></div>
+  
+  <span><button type="button" class="btn game-more-btn mrg-top-5">Deposit</button></span>
+   <span><button type="button" class="btn game-more-btn mrg-top-5">Withdraw</button></span>
+     </div><!-----------end of side box---------->
+    
+    </div><!------end of side-bord-area--------->
+   </div>  <!--end-of col-md-12--> 
+    <div class="col-md-12">
+    <div class="side-bord-area">
+    <div class="side-box">
+   
+    <table class="table " style="margin-bottom:5px;">
+    
+    <tbody>
+      <tr>
+        <td colspan="7" style="color: red; font-size: 24px;">Martin Bagh </td>
+         
+        
+      </tr>   
+      <tr class="dotted-border">
+        <td style="color:#AFAFAF; font-size:16px;">Newzeland </td>
+              
+        <td style="color: #AFAFAF; font-size: 16px;">4512</td>      
+      </tr>  
+      
+      <tr>
+      <td class="pasar_ganti1"><a href="#">Singapore</a></td>
+      <td class="pasar_ganti1"><img src="images/online5.png" width="30"></td>
+      <td align="right">7394</td>
+      </tr> 
+       <tr>
+      <td class="pasar_ganti1"><a href="#">HAINAN</a></td>
+      <td class="pasar_ganti1"><img src="images/offline5.png" width="30"></td>
+      <td align="right">6991</td>
+      <tr>
+      <td class="pasar_ganti1"><a href="#">SYDNEY</a></td>
+      <td class="pasar_ganti1"><img src="images/online5.png" width="30"></td>
+      <td align="right">5555</td>
+      </tr>
+      </tr> 
+     
+    </tbody>    
+  </table>
+
+     </div><!-----------end of side box---------->
+    
+    </div><!------end of side-bord-area--------->
+   </div>  <!--end-of col-md-12--> 
+   <div class="col-md-12" style="margin-bottom: 15px; margin-top:10px">
+   <button type="button" class="btn game-more-btn mrg-top-5" style="width:100%">CASINO & GAMES</button>
+   
+   </div>
+   
+    <div class="col-md-12 "  style="margin-bottom: 15px; margin-top:10px">
+   <button type="button" class="btn game-more-btn mrg-top-5" style="width:100%">HOT PROMO !!!</button>
+   
+   </div>
+    <div class="col-md-12 "  >
+    <button type="button" class="btn dashbord-btn mrg-top-5" style="width:100%">DASHBOARD</button>
+    </div>
+     <div class="col-md-12 "  >
+    <button type="button" class="btn dashbord-btn mrg-top-5" style="width:100%">DATA NUMBER OUTPUT</button>
+    </div>
+     <div class="col-md-12 "  >
+    <button type="button" class="btn dashbord-btn mrg-top-5" style="width:100%">DATA TRANSACTION HISTORY</button>
+    </div>
+     <div class="col-md-12 "  >
+    <button type="button" class="btn dashbord-btn mrg-top-5" style="width:100%">INVOICE</button>
+    </div>
+     <div class="col-md-12 "  >
+    <button type="button" class="btn dashbord-btn mrg-top-5" style="width:100%">DATA Refferal</button>
+    </div>
+   
+   
+   
+   
+    </div>  <!--end-of col-md-3--> 
+    <div class="col-md-9 rdc-padding">
+    <div class="information-page-area">    
+    <div  class="clear"></div>
+    
+   
+    <div  class="col-md-12 mrg-top-20">
+    <div class="game-body" >
+    <div class="col-md-12 game-panel-area ">
+    <ul class="nav nav-tabs game-tab">
+    <li class="active"><a data-toggle="tab" href="#dashbord">DASHBOARD</a></li>
+    <li><a data-toggle="tab" href="#menu1">LIMIT BET</a></li>
+    <li><a data-toggle="tab" href="#menu2">DISCOUNT</a></li>
+    <li><a data-toggle="tab" href="#menu3">REFRENSI</a></li>
+    <li><a data-toggle="tab" href="#menu4">KEMENANGAN</a></li>
+     <li><a data-toggle="tab" href="#menu5">GAMES</a></li>    
+  </ul>
+  
+   <div class="tab-content brd-btm">
+    <div id="dashbord" class="tab-pane fade in active">
+      <h2>SELAMAT DATANG</h2>
+      
+      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p>
+     
+     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
+     
+     <div class="clear"></div>
+   <div class="table-responsive">
+     <table class="table table-bordered game-dashbrd-table"  style="color: #111111; font-family: arial; font-size: 12px;" border="2" cellspacing="0" cellpadding="5">
+	<tbody>
+		<tr >
+			<th>O</th>
+			<th>Pasaran</th>
+			<th>WEB RESMI</th>
+			<th>Di Undi</th>
+			<th>Libur</th>
+			<th>Perkiraan Waktu</th>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td style="text-align: left;">Singapore</td>
+			<td>www.singaporepools.com.sg</td>
+			<td>Minggu, Senin, Selasa, Rabu, Kamis , Jumat, Sabtu</td>
+			<td>-</td>
+			<td style="text-align: center;">17:45 WIB</td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td style="text-align: left;">Sabang</td>
+			<td>www.sabang4d.com</td>
+			<td>Minggu, Senin, Selasa, Rabu, Kamis , Jumat, Sabtu</td>
+			<td>-</td>
+			<td style="text-align: center;">15:45 WIB</td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td>Sydney</td>
+			<td>www.sydneypools.com</td>
+			<td>Minggu, Senin, Selasa, Rabu, Kamis , Jumat, Sabtu</td>
+			<td>-</td>
+			<td style="text-align: center;">14:00 WIB</td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td style="text-align: left;">Johor</td>
+			<td>www.Johor4d.com</td>
+			<td>Minggu, Senin, Selasa, Rabu, Kamis , Jumat, Sabtu</td>
+			<td>-</td>
+			<td style="text-align: center;">21:10 WIB</td>
+		</tr>
+		<tr>
+			<td>5.</td>
+			<td style="text-align: left;">Hongkong</td>
+			<td>www.hongkongpools.com</td>
+			<td>Minggu, Senin, Selasa, Rabu, Kamis , Jumat, Sabtu</td>
+			<td>-</td>
+			<td style="text-align: center;">23:00 WIB</td>
+		</tr>
+		<tr bgcolor="#666666">
+			<td colspan="6">Pemenang adalah Keluaran Pertama (1st Prize) pada Website Resmi setiap Pasaran.</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+  <h2>SELAMAT DATANG</h2>
+      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p>
+      
+      <h2>NB:</h2>
+      <p>Perhatikan Tujuan DEPOSIT anda.</p>
+      <p>Minimum DEPOSIT :<strong> Rp. 50.000</strong></p>
+      <p>Pastikan Rekening anda adalah VALID karena Tidak dapat diubah.</p>
+    </div>
+    <div id="menu1" class="tab-pane fade">
+      <h2>SELAMAT DATANG</h2>
+      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p>
+      <div  class="clear"></div>
+      
+        <h2>LIMIT BET :</h2>
+        <div class="table-responsive">
+      <table class="table table-bordered ">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>John</td>
+        <td>Doe</td>
+        <td>john@example.com</td>
+      </tr>
+      <tr>
+        <td>Mary</td>
+        <td>Moe</td>
+        <td>mary@example.com</td>
+      </tr>
+      <tr>
+        <td>July</td>
+        <td>Dooley</td>
+        <td>july@example.com</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+    </div>
+    <div id="menu2" class="tab-pane fade">
+     <h2>SELAMAT DATANG</h2>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium .</p>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium .</p>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium .</p>
+      
+      
+      <div class="table-responsive mrg-top-20">
+      <table class="table table-bordered ">
+   
+    <tbody>
+      <tr >
+        <td rowspan="2">Lavel</td>
+        <td>0</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+      </tr>
+      <tr>
+       <td>500</td>
+        <td>1000</td>
+        <td>1503</td>
+        <td>2000</td>
+        <td>2500</td>
+      </tr>
+     
+    </tbody>
+  </table>
+  </div>
+    </div>
+    <div id="menu3" class="tab-pane fade">
+      <h2>REFFERAL & BONUS :</h2>
+      <p>Member yang merefrensikan Pangerantoto disebut REFERRAL dan akan Mendapat Bonus REFERAL</p>
+      <p>Bonus Referral di hitung setiap Periode </p>
+      <p>Besaran BONUS REFFERAL berbeda setiap GAME dan PASARAN</p>
+      <p>TABEL BONUS REFFERAL dapat dilihat pada Menu DATA REFFERAL.</p>
+      <p>Bonus referral hanya diberikan pada referensi langsung anda.</p>
+      <div class="clear"></div>
+      <br>
+       <h2>CARA MENDAPATKAN BONUS REFFERAL : :</h2>
+      <p>Member yang merefrensikan Pangerantoto disebut REFERRAL dan akan Mendapat Bonus REFERAL</p>
+      <p>Masukkan link referensi yang berada di bagian DATA REFFERAL ke BLOG,FB,TWITER,WEB anda.</p>
+      <p>Besaran BONUS REFFERAL berbeda setiap GAME dan PASARAN</p>
+      <p>Promosikan LINK REFF anda ke teman,rekan,kenalan, dll.</p>
+      <p>Bonus referral hanya diberikan pada referensi langsung anda.</p>
+    </div>
+    
+     <div id="menu4" class="tab-pane fade">
+      <h2> INDEX KEMENANGAN:</h2>
+      <p>Hadiah dari Taruhan Anda disebut INDEX KEMENANGAN..</p>
+      <p>INDEX KEMENANGAN berbeda setiap GAME dan PASARAN.</p>
+      <p>INDEX KEMENANGAN tidak berpengaruh pada LEVEL anda.</p>
+      <p>Tabel INDEX KEMENANGAN dapat dilihat di bawah.</p>
+      <p>Minimum SALDO 50000 agar dapat melihat Tabel INDEX KEMENANGAN.</p>
+      <p>Selalu PERIKSA Taruhan anda dan COCOKKAN dengan INDEX KEMENANGAN.</p>
+    </div>
+    
+     <div id="menu5" class="tab-pane fade">
+     <div class=" new-term-text  mrg-top-20 " align="center">
+            <ul>
+              <li><a href="#">No. Keluar</a></li>
+              <li><a href="#">4D</a></li>
+              <li><a href="#">Colok Bebas</a></li>
+              <li><a href="#">Colok Bebas 2D</a></li>
+              <li><a href="#">Colok Naga </a></li>
+              <li><a href="#">Colok Jitu</a></li>
+              <li><a href="#">Tengah</a></li>
+              <li><a href="#">Kombinasi  </a></li>
+              <li><a href="#">Dasar</a></li>
+               <li><a href="#">50-50</a></li>
+              <li><a href="#">Shio  </a></li>
+              <li><a href="#">Silang</a></li>
+              <li><a href="#">Kembang</a></li>
+            </ul>
+          </div>
+      <h2>50-50</h2>
+      <p>Menebak ganjil/genap, besar/kecil, Permainan ini sangat menarik karena pasarannya naik turun sesuai keinginan market pada waktu tersebut. Dengan demikian, nilai pembelian dipengaruhi kei (pasaran)..
+</p>
+<p>Struktur: ABCD</p>
+<p>Menebak ganjil/genap dan besar/kecil dari posisi:</p>
+<p>A = AS</p>
+<p>B = KOP</p>
+<p>C = KEPALA</p>
+<p>Besar/Kecil: 0-4=kecil, 5-9=besar</p>
+<p>Ganjil/Genap : 1=ganjil, 2=genap dan seterusnya</p>
+<p>Misal anda membeli dengan dana Rp.100rb untuk AS Genap, menang = 100rb + [indeks pasaran AS Genap 50-50]</p>
+<p>Atau: Jika membeli dengan dana Rp.100rb untuk Ekor Ganjil, menang = 100rb + [indeks pasaran Ekor Ganjil 50-50]</p>
+<p><strong>NB:</strong> Indeks menang dan diskon dapat dilihat di bagian Peraturan</p>
+    </div>
+    
+     <div id="menu6" class="tab-pane fade">
+      <h3>Menu 3</h3>
+      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    </div>
+  </div>
+    
+    </div> <!--end-of col-md-12--> 
+    
+    
+    
+    
+   
+     <div class="clear"></div>
+    </div><!--end-of game-body--> 
+    </div>
+    <div class="clear"></div>
+    </div>  <!--end-of information-page-area--> 
+    </div> <!--end-of col-md-9--> 
+        
+        
+        
+        
+        <!--end of col-md-12-->
+        <div class="clear"></div>
+      
+    </div>
+    <!--end of game-area-->
+    
+    <div class="col-md-12 footer-btm">
+      <div class="ft-black-area">
+        <div class="col-md-8 col-md-offset-2 ">
+          <div class="col-md-4">
+            <p  class="secure-p"><span><img src="images/secure-1.png " class="pd-right"></span>Verisign Secure</p>
+          </div>
+          <div class="col-md-4">
+            <p  class="secure-p"><span><img src="images/secure-2.png" class="pd-right"></span>100% Safe & Secure</p>
+          </div>
+          <div class="col-md-4">
+            <p  class="secure-p"><span><img src="images/secure-3.png" class="pd-right"></span>Technical system Testing</p>
+          </div>
+        </div>
+        <div class="col-md-12 rdc-padding mrg-top-20"> <img src="images/ft-line.png" alt="" class="img-responsive full-width"> </div>
+        <div class="col-md-12 " align="center">
+          <div class=" term-text mrg-top-20  ">
+            <ul>
+              <li><a href="index.php">Home</a></li>
+              <li><a href="about-us.php">About us</a></li>
+              <li><a href="purchase-lottery.php">Purchase Lottery</a></li>
+              <li><a href="result.php">4d Results</a></li>
+              <li><a href="#">How it works </a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+          <p class="secure-p mrg-top-20"><span style=" color:#fff">Copyright &copy; 2015 Powered by</span> companyname.com</p>
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>    <!--end-of col-md-12--> 
+    
+  </div>
+  <!--end-of container--> 
+</div>
+<!--end-of container-fluid main-body-area--> 
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
