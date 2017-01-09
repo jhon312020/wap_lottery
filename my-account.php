@@ -88,7 +88,7 @@
 <br><br>
 <div class="container-fluid">
 	<a href="data_number_output.php" class="btn btn-default form-control" style="margin-bottom: 5px;">OUTPUT</a> 
-	<a href="javascript:;" class="btn btn-default form-control" style="margin-bottom: 5px;">GAMES</a> 
+	<a href="games.php" class="btn btn-default form-control" style="margin-bottom: 5px;">GAMES</a> 
 	<a href="javascript:;" class="btn btn-default form-control" style="margin-bottom: 5px;">TRANSACTION</a> 
 	<a href="memo_kelur.php" class="btn btn-default form-control" style="margin-bottom: 5px;">M E M O</a> 
 	<a href="deposit_amount.php" class="btn btn-default form-control" style="margin-bottom: 5px;">DEPOSIT</a> 

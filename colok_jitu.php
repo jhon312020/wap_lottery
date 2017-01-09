@@ -1,6 +1,6 @@
 <?php require_once("includes/head.php");
   require_once("includes/check-authentication.php");
-  $arrColokJituDetails = mysql_fetch_array(mysql_query("SELECT * FROM lottery_cms_pages WHERE cms_id = '8'"));
+  $arrColokJituDetails = mysql_fetch_array(mysql_query("SELECT * FROM lottery_cms_pages WHERE cms_id = '34'"));
   $marketName = $_REQUEST['market'];
   date_default_timezone_set("Asia/Kuala_Lumpur");
   $currentDate = date('Y-m-d');
@@ -39,34 +39,106 @@
     $maxbetAmount = 0;
   }
   if(isset($_REQUEST['key']) && $_REQUEST['key'] == "pColokJitu") {
-    $totalPAmount = $_REQUEST['totalPay'];
-    $modTotalPAmount = str_replace( ',', '', $totalPAmount);
     $availableBalace = $_REQUEST['avlbl_blnce'];
-    
-    $modTotalPAmount = $modTotalPAmount * 1 ;
     $availableBalace = $availableBalace * 1;
     
     date_default_timezone_set("Asia/Kuala_Lumpur");
     $t=time();
+		
+		/* Form input from the given code */
+		$data = str_replace(' ', '', $_REQUEST['naga']);
+		
+		$market = $_REQUEST['market'];
+		$period = $_REQUEST['period'];
+		$gameType = $_REQUEST['gametype'];
+					
+		$inputs = [];
+		$modTotalPAmount = 0;
+		$path = explode('&msg=', $_SERVER['REQUEST_URI']);
+		$url = $path[0];
+		$model_name = $_REQUEST['tbk'];
+		foreach($model_name as $inputName=>$inputValue) {
+			$rows = explode(',', trim($inputValue));
+			if(trim($inputValue) != '') {
+				if(count($rows) > 0 && count($rows) <= 10) {
+					foreach($rows as $row) {
+						$columns = explode('#', $row);
+						//Check row value should contain both lottery no and bet amount
+						if(count($columns) == 2) {
+							$lotteryNos = explode('*', $columns[0]);
+							$betAmount = $columns[1];
+							$is_amount = filter_var($betAmount, FILTER_VALIDATE_INT);
+							//Bet amount should be an integer
+							if($is_amount) {
+								//Bet amount should be greater than or equal to minimum bet amount
+								if($betAmount >= $minbetAmount) {
+									foreach($lotteryNos as $lottery) {
+										//lottery number should be an integer
+										if(ctype_digit(strval($lottery))) {
+											//Lottery number with in 9
+											$duplicate = str_split($lottery);
+											if(strlen($lottery) == 1 && $lottery <= 9) {
+												//Check for duplicate lottery number.
+												//if(!isset($inputs[$lottery])) {
+													/* Calculate the discount value */
+													$arrDiscount = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_market_name = '".$market."' and g_type = '".$gameType."'"));
+													$discountPercentage = $arrDiscount['g_discount'];	
+													$discount = ($betAmount*$discountPercentage)/100;
+													$paybleAmount = $betAmount - $discount;
+													$modTotalPAmount += $paybleAmount;
+													$inputs[] = array('lotteryPosition' => strtoupper($inputName), 'lotteryNo' => (int) $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
+												/* } else {
+													header('Location:'.$url.'&msg=Lottery no should be unique');
+													exit();
+												} */
+											} else {
+												header('Location:'.$url.'&msg=Lottery number less than or equal to 9');
+												exit();
+											}
+										} else {
+											header('Location:'.$url.'&msg=Inalid code!');
+											exit();
+										}
+									}
+								} else {
+									header("Location:$url&msg=Min bet amount $minbetAmount");
+									exit();
+								}
+							} else {
+								header('Location:'.$url.'&msg=Invalid code!');
+								exit();
+							}
+						} else {
+							header('Location:'.$url.'&msg=Invalid code');
+							exit();
+						}
+					}
+				} else {
+					header('Location:'.$url.'&msg=maximun bet allowed 10');
+					exit();
+				}
+			}
+		}
+		//print_r($inputs);die;
+		
     if($modTotalPAmount<$availableBalace) {
-      $c = count($_REQUEST['crush_no']);
-      for($i=0;$i<$c;$i++) {
+      foreach($inputs as $input) {
         $market = $_REQUEST['market'];
         $period = $_REQUEST['period'];
         $gameType = $_REQUEST['gametype'];
-        $lotteryNumber = $_REQUEST['crush_no'][$i];
-        $lotteryPosition = $_REQUEST['crush_postion'][$i];
-        $betAmount = $_REQUEST['betamount'][$i];
+        $lotteryNumber = $input['lotteryNo'];
+        $lotteryPosition = $input['lotteryPosition'];
+        $betAmount = $input['betAmount'];
         $modBetAmount = str_replace( ',', '', $betAmount);
-        $discount = $_REQUEST['discount'][$i];
+        $discount = $input['discount'];
         $modDiscount = str_replace( ',', '', $discount);
-        $paybleAmount = $_REQUEST['payble_amount'][$i];
+        $paybleAmount = $input['paybleAmount'];
         $modPaybleAmount = str_replace( ',', '', $paybleAmount);
         $purchaseDateTime = explode(" ", date('Y-m-d H:i:s'));
         $purchaseDate = $purchaseDateTime['0'];
         $purchaseTime = $purchaseDateTime['1'];
         
-        if($_REQUEST['crush_no'][$i]!='' && $_REQUEST['crush_postion'][$i]!='' && $_REQUEST['betamount'][$i]!='') {
+        //if($_REQUEST['crush_no'][$i]!='' && $_REQUEST['crush_postion'][$i]!='' && $_REQUEST['betamount'][$i]!='') {
           $resPurchase = mysql_query("INSERT INTO lottery_purchase( 
           p_member_id, 
           p_category, 
@@ -98,14 +170,14 @@
           '".$purchaseDate."',
           '".$purchaseTime."',
           '".$t."',
-          '0',
+          '1',
           '0')");
-        }
+        //}
       }
-      header("Location:confirm-purchase.php?market=".$marketName."&unique_key=".$t."&member_id=".$_SESSION['lottery']['memberid']);
+      header("Location:".$url."&msg=success");
       exit();
       } else {
-      header("Location:error_purchase.php");
+      header("Location:".$url."&msg=You don't have enough balance for purchasing lottery. Please deposit some amount to you account.");
       exit();
     }
     
@@ -113,225 +185,67 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <?php require_once("includes/html_head.php");?>
-    <script type="text/javascript">
-      $(document).ready(function() {
-        $('.checkBetAmount').maskNumber({integer: true});
-        function calculateTotalBidAmount(){
-          var totalBedAmount = 0;
-          $(".checkBetAmount").each(function(key,elem) { 
-            var inputBed = $(elem).val();
-            //var modInputBed = inputBed.replace(",","");
-            var modInputBed = inputBed.replace(/,/g, '');
-            if(modInputBed != '') {
-              totalBedAmount += parseInt(modInputBed);
-            }
-          });
-          $("#t_betamount").val(totalBedAmount);
-          $('#t_betamount').number( true, 0 );
-        }
-        
-        function calculateTotalDiscount() {
-          var totalDiscount = 0;
-          $(".checkDiscount").each(function(key,elem) {
-            var inputDiscount = $(elem).val();
-            //var modInputDiscount = inputDiscount.replace(",",""); 
-            var modInputDiscount = inputDiscount.replace(/,/g, '');
-            if(modInputDiscount != '') {
-              totalDiscount += parseInt(modInputDiscount);
-            }
-          });
-          $("#t_discount").val(totalDiscount);
-          $("#t_discount").number( true, 0 );
-        }
-        
-        function calculateTotalPaybleAmount() {
-          var totalPayble = 0;
-          $(".checkPaybleAmount").each(function(key,elem) {
-            var inputPaybleAmount = $(elem).val();
-            //var modInputPaybleAmount = inputPaybleAmount.replace(",",""); 
-            var modInputPaybleAmount = inputPaybleAmount.replace(/,/g, '');
-            if(modInputPaybleAmount != '') {
-              totalPayble += parseInt(modInputPaybleAmount);
-            }
-          });
-          $("#t_paybleamount").val(totalPayble);
-          $("#t_paybleamount").number( true, 0 );
-        }
-        $(".checkBetAmount").blur(function(){
-          var betamount = $(this).val();
-          var modbetamount = betamount.replace(/\,/g , "");
-          //alert(modbetamount);
-          var betField = $(this).parent().find('.checkBetAmount');
-          var nextTextFieldId = $(this).parent().next().find(':text');
-          var nextTextFieldId2 =  $(this).parent().next().next().find(':text');
-          <?php if(isset($minbetAmount) && $minbetAmount!=0) {?>
-            if(modbetamount != '' && modbetamount < <?php echo $minbetAmount?>) {
-              alert("Minimum Bet Amount is <?php echo $minbetAmount?>");
-              betField.val('');
-              
-            }
-          <?php }?>
-          <?php if(isset($maxbetAmount) && $maxbetAmount!=0) {?>
-            if(modbetamount > <?php echo $maxbetAmount?>) {
-              alert("Maximum Bet Amount is <?php echo $maxbetAmount?>");
-              betField.val('');
-            }
-          <?php }?>
-          <?php if(isset($minbetAmount) && $maxbetAmount) {?>
-            if(modbetamount >=<?php echo $minbetAmount?> && modbetamount<=<?php echo $maxbetAmount?>) {
-              $.ajax({
-                type:'POST',
-                url:"fetch_colok_jitu_discount_price_ajax.php",
-                data:"action=fetchdiscount&bet_amount="+modbetamount+"&market="+$("#marketn").val()+"&gameType="+$("#gametypeC").val(),
-                success:function(result) {
-                  //alert(result);
-                  var b = result.split('^');
-                  nextTextFieldId.val(b[2]);
-                  nextTextFieldId2.val(b[3]);
-                  calculateTotalBidAmount();
-                  calculateTotalDiscount();
-                  calculateTotalPaybleAmount();
-                }
-              })
-            }
-            <?php } else {?>
-            $.ajax({
-              type:'POST',
-              url:"fetch_colok_jitu_discount_price_ajax.php",
-              data:"action=fetchdiscount&bet_amount="+modbetamount+"&market="+$("#marketn").val()+"&gameType="+$("#gametypeC").val(),
-              success:function(result) {
-                var b = result.split('^');
-                nextTextFieldId.val(b[2]);
-                nextTextFieldId2.val(b[3]);
-                calculateTotalBidAmount();
-                calculateTotalDiscount();
-                calculateTotalPaybleAmount();
-              }
-            }) 
-          <?php }?>
-        });
-      });
-    </script>
-  </head>
-  <body>
-    <?php require_once("includes/header.php");?>
-    <!--end of page head!-->
-    <div class="container-fluid main-body-area  menu-padding">
-      <div class="container">
-        <div class="col-md-12  scroll-text-area  rdc-padding">
-          <div class="col-md-2 arrow-right">
-            <p style="margin-top:25px; color:#fff;">Information</p>
-          </div>
-          <div class="col-md-10 scr-pd-left">
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor Aenean massa.</p>
-          </div>
-        </div>
-        <!--Start of game Page-->
-        <div class="col-md-12 mrg-top-20 game-page-area">
-          <?php require_once("includes/left_panel_game.php");?>
-          <?php $availableBalance = $remainingBalance + $winSum; ?>
-          <!--end-of col-md-3-->
-          <div class="col-md-9 rdc-padding">
-            <div class="information-page-area">
-              <?php require_once("includes/top_game_category.php"); ?>
-              <!--end-of header-->
-              <div  class="clear"></div>
-              <div  class="col-md-12 mrg-top-20">
-                <div class="game-body" >
-                  <h1>COLOK JITU<br>
-                  <small style="font-size:14px;">Guessing Strategies 1 Position In accordance figures 4Angka</small></h1>
-                  <div class="col-md-12 " style="border-bottom: 1px dotted #1B1C21;">
-                    <p class="pull-left" >Period : <?php echo $period;?>&nbsp; (<?php echo $marketName;?>)</p>
-                  </div>
-                  <!--end-of col-md-12-->
-                  
-                  <div class="col-md-12 mrg-top-20">
-                    <form role="form" name="jituForm" id="jituForm" action="" method="POST">
-                      <input type="button" name="simpan" class="game-more-btn pull-right" onclick = this.form.submit(); value="SAVE">
-                      <input type="hidden" name="market" id="marketn" value="<?php echo $marketName;?>">
-                      <input type="hidden" name="avlbl_blnce" value="<?php echo $availableBalance;?>">
-                      <input type="hidden" name="period" value="<?php echo $period; ?>">
-                      <input type="hidden" name="gametype" id="gametypeC" value="Colok Jitu">
-                      <input type="hidden" name="key" value="pColokJitu">
-                      <div class="table-responsive">
-                        <table class="table table-bordered">
-                          <thead>
-                            <tr>
-                              <th>No</th>
-                              <th style="width:200px;">CRUSH</th>
-                              <th>BET</th>
-                              <th>DISCOUNT</th>
-                              <th>PAY</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <?php for($j=1; $j<11; $j++) {?>
-                              <tr>
-                                <td><?php echo $j;?></td>
-                                <td><select class="form-control input-width" name="crush_no[]" id="crush_no_<?php echo $j;?>">
-                                  <option value=""></option>
-                                  <option value="0">0</option>
-                                  <option value="1">1</option>
-                                  <option value="2">2</option>
-                                  <option value="3">3</option>
-                                  <option value="4">4</option>
-                                  <option value="5">5</option>
-                                  <option value="6">6</option>
-                                  <option value="7">7</option>
-                                  <option value="8">8</option>
-                                  <option value="9">9</option>
-                                </select>
-                                <select class="form-control country-input-width" name="crush_postion[]" id="crush_postion_<?php echo $j;?>">
-                                  <option value="AS">AS</option>
-                                  <option value="KOP">Kop</option>
-                                  <option value="KEPALA">Kepala</option>
-                                  <option value="EKOR">Ekor</option>
-                                </select></td>
-                                <td><input type="text" class="form-control  rdc-padding checkBetAmount" name="betamount[]" id="betamount_<?php echo $j;?>" data-thousands=","></td>
-                                <td><input type="text" class="form-control rdc-padding checkDiscount" readonly="readonly" name="discount[]" id="discount_<?php echo $j;?>"></td>
-                                <td><input type="text" class="form-control rdc-padding checkPaybleAmount" readonly="readonly" name="payble_amount[]" id="payble_amount_<?php echo $j;?>"></td>
-                              </tr>
-                            <?php }?>
-                            <tr style="background:#333333; color:#FFFFFF">
-                              <td colspan="2" align="center" style="border:none;">Total</td>
-                              <td style="border:none;"><input type="text" class="form-control" id="t_betamount"></td>
-                              <td style="border:none;"><input type="text" class="form-control" id="t_discount"></td>
-                              <td style="border:none;"><input type="text" class="form-control" name="totalPay" id="t_paybleamount"></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <div class="col-md-12">
-                          <input type="button" name="simpan" class="game-more-btn pull-right" onclick = this.form.submit(); value="SAVE">
-                        </div>
-                      </div>
-                      <!-------end of table------>
-                    </form>
-                    <?php echo $arrColokJituDetails['cms_page_details']; ?>
-                    <!--end-of col-md-12--> 
-                  </div>
-                  <!--end-of col-md-12-->
-                  <div class="clear"></div>
-                </div>
-                <!--end-of game-body--> 
-              </div>
-              <div class="clear"></div>
-            </div>
-            <!--end-of information-page-area--> 
-          </div>
-          <!--end-of col-md-9--> 
-          
-          <!--end of col-md-12-->
-          <div class="clear"></div>
-        </div>
-        <!--end of game-area-->
-        <?php require_once("includes/footer.php");?>
-        <!--end-of col-md-12--> 
-        
-      </div>
-      <!--end-of container--> 
-    </div>
-    <!--end-of container-fluid main-body-area-->
-  </body>
-</html>
+	<head>
+		<?php require_once("includes/html_head.php");?>
+	</head>
+	<body>
+		<?php require_once("includes/navigation.php");?>
+		<div class="container-fluid">
+		<a href="my-account.php" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">HOME</a>
+		---
+		<a href="games.php" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">GAMES</a> 
+		<br /><br />
+		<?php if(isset($_REQUEST['msg'])) { ?>
+			<?php 
+			$msg = $_REQUEST['msg'];
+			if($msg == 'success') {
+			?>
+				<div class="alert alert-success" >Thank you for purchasing the lottery ticket from Lottery.com</div>
+			<?php } else { ?>
+				<div class="alert alert-danger" ><?php echo $_REQUEST['msg']; ?></div>
+		<?php } } ?>
+		<?php $availableBalance = $remainingBalance + $winSum; ?>
+		BET - NAGA / COLOK BEBAS 3D
+		<br />
+		PERIOD : <?php echo $period;?><hr />
+		<form class="form-horizontal" method="post" action="" name="frm_shio">
+			<input type="hidden" name="market" id="marketn" value="<?php echo $marketName;?>">
+			<input type="hidden" name="period" value="<?php echo $period; ?>">
+			<input type="hidden" name="avlbl_blnce" value="<?php echo $availableBalance;?>">
+			<input type="hidden" name="gametype" id="gametypeC" value="Colok Jitu">
+			<input type="hidden" name="key" value="pColokJitu">
+			<?php echo $arrColokJituDetails['cms_page_details']; ?>
+			<hr />
+			<div class="form-group"> 
+				<small><mark>DONT REFRESH THIS PAGE  & Max bet 120 Record</mark></small><br />
+				Contoh Bet : 1#10000  <small>atau </small>0*3#10000 <small>atau </small> 2*1#10000,5#20000
+			</div>
+			<hr />
+			<div class="form-group"> 
+				<label class="col-xs-4 control-label">AS</label> 
+				<div class="col-xs-8"><input type="text" class="form-control" placeholder="BET AS" name="tbk[as]" id="tbk_as" value="" > </div> 
+			</div>
+			
+			<div class="form-group"> 
+				<label class="col-xs-4 control-label">KOP</label> 
+				<div class="col-xs-8"><input type="text" class="form-control" placeholder="BET KOP" name="tbk[kop]" id="tbk_kop" value="" > </div> 
+			</div>
+			<div class="form-group"> 
+				<label class="col-xs-4 control-label">KEPALA</label> 
+				<div class="col-xs-8"><input type="text" class="form-control" placeholder="BET KEPALA" name="tbk[kepala]" id="tbk_kepala" value="" > </div> 
+			</div>
+			
+			<div class="form-group"> 
+				<label class="col-xs-4 control-label">EKOR</label> 
+				<div class="col-xs-8"><input type="text" class="form-control" placeholder="BET EKOR" name="tbk[ekor]" id="tbk_ekor" value="" > </div> 
+			</div>
+			<div class="form-group"> 
+				<div class="col-sm-12">
+				<input type="submit" class="btn btn-warning form-control" name="submit" id="submit" value="BELI" onclick="return confirm('PROSES TARUHAN INI???')"/> 
+				</div> 
+			</div>
+		</form></div>
+		<hr/>			
+		<?php include("includes/footer.php");?>
+	</body>
+</html>		
