@@ -24,29 +24,30 @@
 	<div class="firstMsg alert alert-success" style="display:none;"></div>
 	<div class="replyMsg alert alert-success" style="display:none;"></div>
 	<div style="padding:3px 0px 10px; 0px;">
-	<a href="tulis_memo.php">
-	<div class="btn btn-primary btn-xs" style="border:1px solid #000000">Write MEMO</div>
-	</a>
+	<?php include('includes/memo_head.php'); ?>
 	</div>
 	<table width='100%' cellpadding='0' cellspacing='5' id='tabeldata' class='table table-bordered table-hover center'>
 		<thead id='head1'>
 			<tr class='bg-info'>
-				<th width='30%'>Date</th>
-				<th>Title</th>
+				<th>PENGIRIM</th>
+				<th>SUBJECT</th>
+				<th>TANGGAL</th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php while($arrMessageOutbox = mysql_fetch_array($resMessageOutbox)) {
-			$arrUsername = mysql_fetch_array(mysql_query("SELECT * FROM lottery_member_registration WHERE member_id = '".$arrMessageOutbox['m_from_uid']."'"));
-			if($arrMessageOutbox['m_parent_id']!=0) {
-			$countReplyByUser = mysql_fetch_array(mysql_query("SELECT count(*) FROM lottery_memo WHERE m_from_uid = '".$_SESSION['lottery']['memberid']."' and m_parent_id = '".$arrMessageOutbox['m_parent_id']."'"));
-			}
-		?>
+			<?php 
+				while($arrMessageOutbox = mysql_fetch_array($resMessageOutbox)) {
+				$arrUsername = mysql_fetch_array(mysql_query("SELECT * FROM lottery_member_registration WHERE member_id = '".$arrMessageOutbox['m_from_uid']."'"));
+				if($arrMessageOutbox['m_parent_id']!=0) {
+					$countReplyByUser = mysql_fetch_array(mysql_query("SELECT count(*) FROM lottery_memo WHERE m_from_uid = '".$_SESSION['lottery']['memberid']."' and m_parent_id = '".$arrMessageOutbox['m_parent_id']."'"));
+				}
+			?>
 			<tr>
-				<td><?php echo Date('l', strtotime($arrMessageOutbox['m_date_time'])).' - '.Date('F d, Y H:i:s', strtotime($arrMessageOutbox['m_date_time'])); ?></td>
-				<td><a href='user.php?xpage=memo&go=read&mid=134197'><?php echo $arrMessageOutbox['m_subject']; ?></a></td>
+				<td><?php echo $arrUsername['member_username']; ?></td>
+				<td><a href="kelur_details.php?memo_id=<?php echo $arrMessageOutbox['m_id']; ?>&m_parent_id=<?php echo $arrMessageOutbox['m_parent_id'];?>"><?php if(isset($countReplyByUser)) {?><?php for($i=0;$i<$countReplyByUser['0'];$i++) {?>RE : <?php }?><?php }?><?php echo $arrMessageOutbox['m_subject']; ?></a></td>
+				<td><?php echo $arrMessageOutbox['m_date_time']; ?></td>
 			</tr>
-			<?php } ?>
+			<?php }?>
 		</tbody>
 	</table>
 </div>

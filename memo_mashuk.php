@@ -34,35 +34,42 @@
 	<?php include("includes/navigation.php");?>
 	<div class="container-fluid"> 
 	<a href="user.php" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">HOME</a> 
-
 	<br /><br />
 	<div style="padding:3px 0px 10px; 0px;">
-	<a href="user.php?xpage=memo&go=new">
-	<div class="btn btn-primary btn-xs" style="border:1px solid #000000">Tulis MEMO</div>
-	</a>
+		<?php include('includes/memo_head.php'); ?>
 	</div>
 	<table width='100%' cellpadding='0' cellspacing='5' id='tabeldata' class='table table-bordered table-hover center'>
 		<thead id='head1'>
 			<tr class='bg-info'>
-				<th width='30%'>Date</th>
-				<th>Title</th>
+				<th></th>
+				<th>DARI</th>
+				<th>SUBJECT</th>
+				<th>TANGGAL</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php 
-				while($arrReplyMemo = mysql_fetch_array($resReplyMemo)) {
-				?>
+			while($arrReplyMemo = mysql_fetch_array($resReplyMemo)) {
+			?>
 			<tr>
-				<td>Kamis - 05 Jan 2017 22:27:15</td>
-				<td><a href='user.php?xpage=memo&go=read&mid=134197'>SELAMAT DATANG</a></td>
+				<td><a href="javascript:void(0)" onclick="javascript:delMemo('<?php echo $arrReplyMemo['m_parent_id']; ?>')"><img src="images/delete.png" alt="DELETE" title="DELETE"></a></td>
+				<td><?php echo $arrReplyMemo['m_from_uid'];?></td>
+				<td><a href="mashuk_details.php?memo_id=<?php echo $arrReplyMemo['m_id']; ?>"><?php //for($i=0;$i<$countReply['0'];$i++) {?><!--RE : --><?php //}?><?php echo $arrReplyMemo['m_subject'];?></a></td>
+				<td><?php echo $arrReplyMemo['m_date_time']; ?></td>
 			</tr>
-			<?php } ?>
+		<?php }?>
 		</tbody>
 	</table>
 </div>
 	<hr/>
 	</div>
 	<hr/>
+	<?php if(isset($_REQUEST['msg']) && $_REQUEST['msg'] == '3') {?>
+		<script type="text/javascript">
+			$(".delMsg").show();
+			$(".delMsg").html("Memo successfully deleted");
+		</script>
+	<?php }?>
 	<?php include("includes/footer.php");?>
 </body>
 </html>

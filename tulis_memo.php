@@ -37,11 +37,15 @@
 	<div class="container-fluid">	
 	<a href="my-account.php" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">HOME</a> 
 <br /><br />
+<div style="padding:3px 0px 10px; 0px;">
+	<?php include('includes/memo_head.php'); ?>
+</div>
+<br /><br />
 <form role="form" method="post" action="" enctype="multipart/form-data" class="form-horizontal" id="memo-form">
 <input type="hidden" name="key" value="sendMemo">
 <input type="hidden" name="parent_id" value="0">
 	<div class="form-group">
-    <label for="inputEmail3" class="col-sm-2 control-label">Subject</label>
+    <label for="inputEmail3" class="col-sm-2 control-label">SUBJEK: </label>
     <div class="col-sm-10">
       <select  class= 'form-control' name='subject' id='subject' >
 			<?php while($arrMemoSubject = mysql_fetch_array($resMemoSubject)) {?>
@@ -51,7 +55,7 @@
     </div>
 </div>
 	<div class="form-group">
-    <label for="inputEmail3" class="col-sm-2 control-label">Message</label>
+    <label for="inputEmail3" class="col-sm-2 control-label">PESAN:</label>
     <div class="col-sm-10">
       <textarea class="form-control" rows="3" name="message" id="message" maxlength="250"></textarea>
     </div>
