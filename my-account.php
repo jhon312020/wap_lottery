@@ -78,19 +78,11 @@
 </head> 
 <body> 
 <?php include("includes/navigation.php");?>
-<div class="container-fluid"> 
-	<div class="row"> 
-		<div class="col-xs-12" align="center" style="font-size:0.9em"> 
-			Untuk member BRI, kami umumkan rekening lama a/n MARCEL KOPING telah diganti dengan rekening baru a/n IDA FARIDAH, terima kasih. <br> MGM www.mgmpools.com Minggu, Senin, Selasa, Rabu, Kamis , Jumat, Sabtu Tutup 12:30 result 13.00 WIB <br> DENMARK www.denmarkpools.com Minggu, Senin, Selasa, Rabu, Kamis , Jumat, Sabtu Tutup 20.30 WIB result 21.00 WIB <br> SINGAPORE www.singaporepools.com.sg Minggu, Senin, Rabu, Kamis,Sabtu tutup 17.25 result 17.45 WIB  <br> HAINAN www.hainanpools.com Minggu, Senin, Selasa, Rabu, Kamis , Jumat, Sabtu Tutup 14:30 result 15.00 WIB <br>  <hr>
-		</div> 
-	</div> 
-	</div> 	
-<br><br>
 <div class="container-fluid">
-	<a href="data_number_output.php" class="btn btn-default form-control" style="margin-bottom: 5px;">OUTPUT</a> 
+	<a href="data_number_output.php" class="btn btn-default form-control" style="margin-bottom: 5px;">KELUARAN</a> 
 	<a href="games.php" class="btn btn-default form-control" style="margin-bottom: 5px;">GAMES</a> 
-	<a href="javascript:;" class="btn btn-default form-control" style="margin-bottom: 5px;">TRANSACTION</a> 
-	<a href="memo_kelur.php" class="btn btn-default form-control" style="margin-bottom: 5px;">M E M O</a> 
+	<a href="transfer_history.php" class="btn btn-default form-control" style="margin-bottom: 5px;">TRANSAKSI</a> 
+	<a href="memo_kelur.php" class="btn btn-default form-control" style="margin-bottom: 5px;">MEMO</a> 
 	<a href="deposit_amount.php" class="btn btn-default form-control" style="margin-bottom: 5px;">DEPOSIT</a> 
 	<a href="withdraw_amount.php" class="btn btn-default form-control" style="margin-bottom: 5px;">WITHDRAW</a> 
 	<a href="logout.php" class="btn btn-default form-control" style="margin-bottom: 5px;">LOGOUT</a> </div>

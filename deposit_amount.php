@@ -120,13 +120,13 @@
 		</div>
  	</div>
 	<div class="form-group">
-		<label for="inputPassword3" class="col-sm-2 control-label">DATE</label>
+		<label for="inputPassword3" class="col-sm-2 control-label">TANGGAL</label>
 		<div class="col-sm-10">
 		  <input type="text" class="form-control" name="tanggal" readonly="readonly" value="<?php echo Date('Y-m-d H:i:s'); ?>">
 		</div>
  	</div>
   <div class="form-group">
-		<label for="inputPassword3" class="col-sm-2 control-label">Amount</label>
+		<label for="inputPassword3" class="col-sm-2 control-label">Jumlah</label>
 		<div class="col-sm-10">
 		  <input type="text" class="form-control" id="amountDeposit" placeholder="Only Numeric" name="amount" maxlength="15">
 		</div>

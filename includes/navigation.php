@@ -263,4 +263,12 @@
 	</div> 
 	</div> 	
 <hr/>
+<div class="container-fluid"> 
+	<div class="row"> 
+		<div class="col-xs-12" align="center" style="font-size:0.9em"> 
+			Untuk member BRI, kami umumkan rekening lama a/n MARCEL KOPING telah diganti dengan rekening baru a/n IDA FARIDAH, terima kasih. <br> MGM www.mgmpools.com Minggu, Senin, Selasa, Rabu, Kamis , Jumat, Sabtu Tutup 12:30 result 13.00 WIB <br> DENMARK www.denmarkpools.com Minggu, Senin, Selasa, Rabu, Kamis , Jumat, Sabtu Tutup 20.30 WIB result 21.00 WIB <br> SINGAPORE www.singaporepools.com.sg Minggu, Senin, Rabu, Kamis,Sabtu tutup 17.25 result 17.45 WIB  <br> HAINAN www.hainanpools.com Minggu, Senin, Selasa, Rabu, Kamis , Jumat, Sabtu Tutup 14:30 result 15.00 WIB <br>  <hr>
+		</div> 
+	</div> 
+	</div> 	
+<br><br>
 

@@ -78,19 +78,13 @@
 											//Lottery number with in 9
 											$duplicate = str_split($lottery);
 											if(strlen($lottery) == 1 && $lottery <= 9) {
-												//Check for duplicate lottery number.
-												//if(!isset($inputs[$lottery])) {
-													/* Calculate the discount value */
-													$arrDiscount = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_market_name = '".$market."' and g_type = '".$gameType."'"));
-													$discountPercentage = $arrDiscount['g_discount'];	
-													$discount = ($betAmount*$discountPercentage)/100;
-													$paybleAmount = $betAmount - $discount;
-													$modTotalPAmount += $paybleAmount;
-													$inputs[] = array('lotteryPosition' => strtoupper($inputName), 'lotteryNo' => (int) $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
-												/* } else {
-													header('Location:'.$url.'&msg=Lottery no should be unique');
-													exit();
-												} */
+												/* Calculate the discount value */
+												$arrDiscount = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_market_name = '".$market."' and g_type = '".$gameType."'"));
+												$discountPercentage = $arrDiscount['g_discount'];	
+												$discount = ($betAmount*$discountPercentage)/100;
+												$paybleAmount = $betAmount - $discount;
+												$modTotalPAmount += $paybleAmount;
+												$inputs[] = array('lotteryPosition' => strtoupper($inputName), 'lotteryNo' => (int) $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
 											} else {
 												header('Location:'.$url.'&msg=Lottery number less than or equal to 9');
 												exit();

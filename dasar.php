@@ -84,7 +84,7 @@
 									$discountPercentage = $arrDiscount['g_kei'];	
 									if($position == 'genap'){
 										if($discountPercentage < 0){
-											$discount = abs(($betAmount * $discountPercentage)/100);
+											$discount = ($betAmount * $discountPercentage)/100;
 										}
 										else{
 											$discount = 0;
@@ -92,18 +92,18 @@
 									}
 									else if($position == 'kecil'){
 										if($discountPercentage < 0){
-											$discount = abs(($betAmount * $discountPercentage)/100);
+											$discount = ($betAmount * $discountPercentage)/100;
 										}
 										else{
 											$discount = 0;
 										}
 									}
 									else{
-										$discount = abs(($betAmount * $discountPercentage)/100);
+										$discount = ($betAmount * $discountPercentage)/100;
 									}	
 									$paybleAmount = $betAmount - $discount;
 									$modTotalPAmount += $paybleAmount;
-									$inputs[] = array('crushPosition' => $position, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
+									$inputs[] = array('crushPosition' => $position, 'betAmount' => $betAmount, 'discount' => abs($discount), 'paybleAmount' => $paybleAmount);
 								} else {
 									header('Location:'.$url.'&msg=Inalid code!');
 									exit();
@@ -126,7 +126,7 @@
 			header('Location:'.$url.'&msg=maximun bet allowed 10');
 			exit();
 		}
-		print_r($inputs);die;
+		//print_r($inputs);die;
 		if($modTotalPAmount<$availableBalace) {
 			foreach($inputs as $input) {
 				$market = $_REQUEST['market'];
