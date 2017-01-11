@@ -147,99 +147,97 @@
 		$modTotalPAmount = 0;
 		$path = explode('&msg=', $_SERVER['REQUEST_URI']);
 		$url = $path[0];
-		$rows = explode(',', trim($data));
-		if(count($rows) > 0 && count($rows) <= 10) {
-			foreach($rows as $row) {
-				$columns = explode('#', $row);
-				//Check row value should contain both lottery no and bet amount
-				if(count($columns) == 2) {
-					$lotteryNos = explode('*', $columns[0]);
-					$betAmount = $columns[1];
-					$is_amount = filter_var($betAmount, FILTER_VALIDATE_INT);
-					//Bet amount should be an integer
-					if($is_amount) {
-						foreach($lotteryNos as $lottery) {
-							//lottery number should be an integer
-							if(ctype_digit(strval($lottery))) {
-								//Lottery number with in 9
-								$duplicate = str_split($lottery);
-								$lotteryLength = strlen($lottery);
-								if($lotteryLength <= 4) {
-									switch($lotteryLength) {
-										case 4:
-											$gameType = '4D';
-											$arrdiscountPercentage = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '4D' and g_market_name = '".$market."'"));
-											if($minbetAmount4d && $betAmount < $minbetAmount4d) {
-												header('Location:'.$url.'&msg=Minimum bet amount for 4D is '.$minbetAmount4d);
-												exit();
+		$crushList = array('Depan', 'Tengah', 'Belakang');
+		$model_name = $_REQUEST['tbk'];
+		foreach($model_name as $inputName=>$inputValue) {
+			$rows = explode(',', trim($inputValue));
+			if(trim($inputValue) != '') {
+				if(count($rows) > 0 && count($rows) <= 10) {
+					foreach($rows as $row) {
+						$columns = explode('#', $row);
+						//Check row value should contain both lottery no and bet amount
+						if(count($columns) == 2) {
+							$lotteryNos = explode('*', $columns[0]);
+							$betAmount = $columns[1];
+							$is_amount = filter_var($betAmount, FILTER_VALIDATE_INT);
+							//Bet amount should be an integer
+							if($is_amount) {
+								foreach($lotteryNos as $lottery) {
+									//lottery number should be an integer
+									if(ctype_digit(strval($lottery))) {
+										//Lottery number with in 9
+										$duplicate = str_split($lottery);
+										$lotteryLength = strlen($lottery);
+										if($lotteryLength == 2) {
+											/* Calculate the discount value */
+											switch($inputName) {
+												case '2ddepan':
+													$gameType = '2D D';
+													$discountPercentage = $discountPercentage2dd;
+													if($minbetAmount2dd && $betAmount < $minbetAmount2dd) {
+														header('Location:'.$url.'&msg=Minimum bet amount for 2D D is '.$minbetAmount2dd);
+														exit();
+													}
+													if($maxbetAmount2dd && $betAmount > $maxbetAmount2dd) {
+														header('Location:'.$url.'&msg=Maximum bet amount for 2D D is '.$maxbetAmount2dd);
+														exit();
+													}
+													break;
+												case '2dtengah':
+													$gameType = '2D T';
+													$discountPercentage = $arrBettingLimit2dt;
+													if($minbetAmount2dt && $betAmount < $minbetAmount2dt) {
+														header('Location:'.$url.'&msg=Minimum bet amount for 2D T is '.$minbetAmount2dt);
+														exit();
+													}
+													if($maxbetAmount2dt && $betAmount > $maxbetAmount2dt) {
+														header('Location:'.$url.'&msg=Maximum bet amount for 2D T is '.$maxbetAmount2dt);
+														exit();
+													}
+													break;
+												case '2dbelakang':
+													$gameType = '2D B';
+													$discountPercentage = $discountPercentage2db;
+													if($minbetAmount2db && $betAmount < $minbetAmount2db) {
+														header('Location:'.$url.'&msg=Minimum bet amount for 2D B is '.$minbetAmount2db);
+														exit();
+													}
+													if($maxbetAmount2db && $betAmount > $maxbetAmount2db) {
+														header('Location:'.$url.'&msg=Maximum bet amount for 2D B is '.$maxbetAmount2db);
+														exit();
+													}
+													break;		
 											}
-											if($maxbetAmount4d && $betAmount > $maxbetAmount4d) {
-												header('Location:'.$url.'&msg=Maximum bet amount for 4D is '.$maxbetAmount4d);
-												exit();
-											}
-											break;
-										case 3:	
-											$gameType = '3D';
-											$arrdiscountPercentage = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '3D' and g_market_name = '".$market."'"));
-											if($minbetAmount3d && $betAmount < $minbetAmount3d) {
-												header('Location:'.$url.'&msg=Minimum bet amount for 3D is '.$minbetAmount3d);
-												exit();
-											}
-											if($maxbetAmount3d && $betAmount > $maxbetAmount3d) {
-												header('Location:'.$url.'&msg=Maximum bet amount for 3D is '.$maxbetAmount3d);
-												exit();
-											}
-											break;
-										case 2:	
-											$gameType = '2D';
-											$arrdiscountPercentage = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '2D' and g_market_name = '".$market."'"));	
-											if($minbetAmount2d && $betAmount < $minbetAmount2d) {
-												header('Location:'.$url.'&msg=Minimum bet amount for 2D is '.$minbetAmount2d);
-												exit();
-											}
-											if($maxbetAmount2d && $betAmount > $maxbetAmount2d) {
-												header('Location:'.$url.'&msg=Maximum bet amount for 2D is '.$maxbetAmount2d);
-												exit();
-											}
-											break;
-										case 1:
-											header('Location:'.$url.'&msg=Invalid game type!');
+											
+											$discount = ($betAmount*$discountPercentage)/100;
+											$paybleAmount = $betAmount - $discount;
+											$modTotalPAmount += $paybleAmount;
+											$inputs[] = array('gameType' => $gameType, 'lotteryNo' => $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
+											
+										} else {
+											header('Location:'.$url.'&msg=Invalid code!');
 											exit();
-											break;
-									}
-									/* Calculate the discount value */
-									if($arrdiscountPercentage['g_kei'] == '0') {
-										$discountPercentage = $arrdiscountPercentage['g_discount'];
+										}
 									} else {
-										$discountPercentage = $arrdiscountPercentage['g_kei'];
+										
+										header('Location:'.$url.'&msg=Inalid code!');
+										exit();
 									}
-									$discount = ($betAmount*$discountPercentage)/100;
-									$paybleAmount = $betAmount - $discount;
-									$modTotalPAmount += $paybleAmount;
-									$inputs[] = array('gameType' => $gameType, 'lotteryNo' => $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
-									
-								} else {
-									header('Location:'.$url.'&msg=Invalid code!');
-									exit();
 								}
 							} else {
-								
-								header('Location:'.$url.'&msg=Inalid code!');
+								header('Location:'.$url.'&msg=Invalid code!');
 								exit();
 							}
+						} else {
+							header('Location:'.$url.'&msg=Invalid code');
+							exit();
 						}
-					} else {
-						header('Location:'.$url.'&msg=Invalid code!');
-						exit();
 					}
 				} else {
-					header('Location:'.$url.'&msg=Invalid code');
+					header('Location:'.$url.'&msg=maximun bet allowed 10');
 					exit();
 				}
 			}
-		} else {
-			header('Location:'.$url.'&msg=maximun bet allowed 10');
-			exit();
 		}
 		//print_r($inputs);die;
 		
@@ -334,7 +332,7 @@
 				<div class="alert alert-danger" ><?php echo $_REQUEST['msg']; ?></div>
 		<?php } } ?>
 		<?php $availableBalance = $remainingBalance + $winSum; ?>
-		TARUHAN - 4D,3D,2D
+		TARUHAN - 2D POSISI
 		<br />
 		PERIOD : <?php echo $period;?><hr />
 		<form class="form-horizontal" method="post" action="" name="frm_shio">
@@ -346,9 +344,9 @@
 				<label class="col-xs-4 control-label">Min bet</label> 
 				<div class="col-xs-8">
 					<p class="form-control-static">: 
-					4D <small> = </small>Rp. <?php echo $minbetAmount4d; ?> ,
-					3D <small> = </small>Rp. <?php echo $minbetAmount3d; ?>  ,
-					2D <small> = </small>Rp. <?php echo $minbetAmount2d; ?> 
+					2D D <small> = </small>Rp. <?php echo $minbetAmount2dd; ?> ,
+					2D T <small> = </small>Rp. <?php echo $minbetAmount2dt; ?>  ,
+					2D B <small> = </small>Rp. <?php echo $minbetAmount2db; ?> 
 				</p>
 				</div> 
 			</div>
@@ -356,9 +354,9 @@
 				<label class="col-xs-4 control-label">Max bet</label> 
 				<div class="col-xs-8">
 				<p class="form-control-static">: 
-					4D <small> = </small>Rp. <?php echo $maxbetAmount4d; ?> ,
-					3D <small> = </small>Rp. <?php echo $maxbetAmount3d; ?>  ,
-					2D <small> = </small>Rp. <?php echo $maxbetAmount2d; ?>
+					2D D <small> = </small>Rp. <?php echo $maxbetAmount2dd; ?> ,
+					2D T <small> = </small>Rp. <?php echo $maxbetAmount2dt; ?>  ,
+					2D B <small> = </small>Rp. <?php echo $maxbetAmount2db; ?>
 				</p>
 				</div> 
 			</div>
@@ -379,21 +377,29 @@
 				<label class="col-xs-4 control-label">Discount</label> 
 				<div class="col-xs-8">
 					<p class="form-control-static">: 
-					4D <small> = </small><?php echo $discountPercentage4d; ?> % ,
-					3D <small> = </small><?php echo $discountPercentage3d; ?> % ,
-					2D <small> = </small><?php echo $discountPercentage2d; ?> %
+					2D D <small> = </small><?php echo $discountPercentage2dd; ?> % ,
+					2D T <small> = </small><?php echo $discountPercentage2dt; ?> % ,
+					2D B <small> = </small><?php echo $discountPercentage2db; ?> %
 					</p>
 				</div> 
 			</div>
 			<hr />
 			<div class="form-group"> 
 				<small><mark>DONT REFRESH THIS PAGE & Max bet 10 Record</mark></small><br />
-				Contoh Benar : 1234*234*34#1000  <small>atau </small>1234#1000,234*34#5000 <small>atau</small>12*21*11#1000,33*32#1000,234*432#1000,1234*4321#1000<br />
+				Contoh Bet : 12#10000  <small>atau </small>02*03#10000 <small>atau </small> 02*03#10000,05#15000
 			</div>
 			<hr />
 			<div class="form-group"> 
-				<label class="col-xs-4 control-label">BET COLOK BEBAS</label> 
-				<div class="col-xs-8"><input type="text" class="form-control" placeholder="BET 4D,3D,2D" name="dimensi" id="dimensi" value="" > </div> 
+				<label class="col-xs-4 control-label">Depan</label> 
+				<div class="col-xs-8"><input type="text" class="form-control" placeholder="BET 2D Depan" name="tbk[2ddepan]" id="2ddepan" value="" > </div> 
+			</div>
+			<div class="form-group"> 
+				<label class="col-xs-4 control-label">Tengah</label> 
+				<div class="col-xs-8"><input type="text" class="form-control" placeholder="BET 2D Tengah" name="tbk[2dtengah]" id="2dtengah" value="" > </div> 
+			</div>
+			<div class="form-group"> 
+				<label class="col-xs-4 control-label">Belakang</label> 
+				<div class="col-xs-8"><input type="text" class="form-control" placeholder="BET 2D Belakang" name="tbk[2dbelakang]" id="2dbelakang" value="" > </div> 
 			</div>
 			<div class="form-group"> 
 				<div class="col-sm-12">

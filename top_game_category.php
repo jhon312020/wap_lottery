@@ -15,6 +15,7 @@
 		<a href="games.php" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">GAMES</a> 
 		<br /><br />
 			<a href='4d.php?market=<?php echo $market_name; ?>' class='btn btn-default form-control' style='margin-bottom: 5px;'>4D / 3D / 2D</a>
+			<a href='2d_posisi.php?market=<?php echo $market_name; ?>' class='btn btn-default form-control' style='margin-bottom: 5px;'>2D Posisi</a>
 			<a href='colok_bebas.php?market=<?php echo $market_name; ?>' class='btn btn-default form-control' style='margin-bottom: 5px;'>Colok Bebas</a>
 			<a href='macau.php?market=<?php echo $market_name; ?>' class='btn btn-default form-control' style='margin-bottom: 5px;'>Macau</a>
 			<a href='colok_naga.php?market=<?php echo $market_name; ?>' class='btn btn-default form-control' style='margin-bottom: 5px;'>Colok Naga</a>
