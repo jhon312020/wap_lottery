@@ -28,7 +28,7 @@ $resMemoReply = mysql_query("SELECT * FROM lottery_memo WHERE m_parent_id = '".$
 <body>
 <?php include("includes/navigation.php");?>
 	<div class="container-fluid"> 
-		<a href="user.php" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">HOME</a> 
+		<a href="my-account.php" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">HOME</a> 
 		<br /><br />
 		<div style="padding:3px 0px 10px; 0px;">
 			<?php include('includes/memo_head.php'); ?>
@@ -61,5 +61,7 @@ $resMemoReply = mysql_query("SELECT * FROM lottery_memo WHERE m_parent_id = '".$
 			</div>
 		</div>
 	</div>
+	<hr/>
+	<?php include("includes/footer.php");?>
 </body>
 </html>

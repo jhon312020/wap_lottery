@@ -53,12 +53,16 @@ function delMemo(mid) {
 <body>
 <?php include("includes/navigation.php");?>
 	<div class="container-fluid"> 
-		<a href="user.php" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">HOME</a> 
+		<a href="my-account.php" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">HOME</a> 
 		<br /><br />
 		<div style="padding:3px 0px 10px; 0px;">
 			<?php include('includes/memo_head.php'); ?>
 		</div>
 		<br /><br />
+		<div style="padding:3px 0px 10px; 0px;">
+			<a href="balas_memo.php?memo_id=<?php echo $memo_id; ?>" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">BALAS MEMO</a> 
+			<a href="javascript:;" class="btn btn-danger btn-xs" onclick="javascript:delMemo('<?php echo $memo_id; ?>')" style="margin-bottom: 5px;">HAPUS MEMO</a> 
+		</div>
 		<div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Tanggal:</label>
 			<div class="col-sm-11">
@@ -68,23 +72,25 @@ function delMemo(mid) {
 		<div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Subject:</label>
 			<div class="col-sm-11">
-				<?php echo $arrOriginalMessage['m_subject']; ?>
+				<?php echo $arrOriginalMemo['m_subject']; ?>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">PESAN:</label>
 			<div class="col-sm-11">
-				<?php while($arrMemoReply = mysql_fetch_array($resMemoReply)) {?>
-				 <p class="msg_reply_text"><?php echo $arrMemoReply['m_message']; ?></p>
-			 <?php }?>  
+				<?php while($arrMemoReplyDetails = mysql_fetch_array($resMemoReplyDetails)) {?>
+			 <p class="msg_reply_text"><?php echo $arrMemoReplyDetails['m_message'];?></p>
+			 <?php }?>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Original Message:</label>
 			<div class="col-sm-11">
-				<?php echo $arrOriginalMessage['m_message']; ?>
+				<?php echo $arrOriginalMemo['m_message']; ?>
 			</div>
 		</div>
 	</div>
+	<hr/>
+	<?php include("includes/footer.php");?>
 </body>
 </html>

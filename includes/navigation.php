@@ -246,8 +246,8 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="height: 30px; min-height: 25px; padding-top: 7px;"> 
 	<div class="container-fluid"> 
 		<a class="pull-left" href="my-account.php"><span class="glyphicon glyphicon-home"></span></a>
-		<a href="my-account.php?xpage=profil">
-		<font color="#000099" style="padding-left:10px;"><?php echo $member['member_fname'];?></font>
+		<a href="profile.php">
+			<font color="#000099" style="padding-left:10px;"><?php echo $member['member_fname'];?></font>
 		</a>
 		<label class="label label-success pull-right">
 			$ : Rp 0 |

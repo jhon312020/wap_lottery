@@ -14,25 +14,6 @@
 	
 	$arrHomeInformation = mysql_fetch_array(mysql_query("SELECT * FROM lottery_cms_pages WHERE cms_id = '23'"));
 	if(isset($_REQUEST['submit'])){
-		/*$firstname = $_REQUEST['fname'];
-			$lastname = $_REQUEST['lname'];
-			$phoneno = $_REQUEST['phone_number'];
-			$email = $_REQUEST['email'];
-			$bankname = $_REQUEST['bank_name'];
-			$accountname = $_REQUEST['account_name'];
-			$accountnumber = $_REQUEST['acc_number'];
-			$referrals = $_REQUEST['referral'];
-			$sql_update_member = "UPDATE `lottery_member_registration` SET `member_fname` = '".$firstname."',
-			`member_lname` = '".$lastname."',
-			`member_phoneno` = '".$phoneno."',
-			`member_email` = '".$email."',
-			`member_bank_name` = '".$bankname."',
-			`member_account_name` = '".$accountname."',
-			`member_account_no` = '".$accountnumber."',
-			`member_referrals` = '".$referrals."'";
-			$sql_update_member .= " WHERE member_id = '".$_SESSION['lottery']['memberid']."'";
-			
-		*/
 		$oldPassword = $_REQUEST['oldPassword'];
 		$newPassword = $_REQUEST['newPassword'];
 		$confirmPassword = $_REQUEST['confirmPassword'];

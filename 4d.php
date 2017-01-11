@@ -33,6 +33,12 @@
 	
 	
 	$arrBettingLimit4d = mysql_fetch_array(mysql_query("SELECT * FROM lottery_betting_limit WHERE bt_market = '".$marketName."' and bt_game_type = '4D'"));
+	$arrdiscountPercentage4d = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '4D' and g_market_name = '".$marketName."'"));
+	if($arrdiscountPercentage4d['g_kei'] == '0') {
+		$discountPercentage4d = $arrdiscountPercentage4d['g_discount'];
+	} else {
+		$discountPercentage4d = $arrdiscountPercentage4d['g_kei'];
+	}
 	$minbetAmount4d = $arrBettingLimit4d['bt_min_bet_amount'];
 	$maxbetAmount4d = $arrBettingLimit4d['bt_max_bet_amount'];
 	if(!isset($minbetAmount4d)) {
@@ -43,6 +49,12 @@
 	}
 	
 	$arrBettingLimit3d = mysql_fetch_array(mysql_query("SELECT * FROM lottery_betting_limit WHERE bt_market = '".$marketName."' and bt_game_type = '3D'"));
+	$arrdiscountPercentage3d = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '3D' and g_market_name = '".$marketName."'"));
+	if($arrdiscountPercentage3d['g_kei'] == '0') {
+		$discountPercentage3d = $arrdiscountPercentage3d['g_discount'];
+	} else {
+		$discountPercentage3d = $arrdiscountPercentage3d['g_kei'];
+	}
 	$minbetAmount3d = $arrBettingLimit3d['bt_min_bet_amount'];
 	$maxbetAmount3d = $arrBettingLimit3d['bt_max_bet_amount'];
 	if(!isset($minbetAmount3d)) {
@@ -55,6 +67,12 @@
 	
 	
 	$arrBettingLimit2d = mysql_fetch_array(mysql_query("SELECT * FROM lottery_betting_limit WHERE bt_market = '".$marketName."' and bt_game_type = '2D'"));
+	$arrdiscountPercentage2d = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '2D' and g_market_name = '".$marketName."'"));
+	if($arrdiscountPercentage2d['g_kei'] == '0') {
+		$discountPercentage2d = $arrdiscountPercentage2d['g_discount'];
+	} else {
+		$discountPercentage2d = $arrdiscountPercentage2d['g_kei'];
+	}
 	$minbetAmount2d = $arrBettingLimit2d['bt_min_bet_amount'];
 	$maxbetAmount2d = $arrBettingLimit2d['bt_max_bet_amount'];
 	if(!isset($minbetAmount2d)) {
@@ -67,6 +85,12 @@
 	
 	
 	$arrBettingLimit2dd = mysql_fetch_array(mysql_query("SELECT * FROM lottery_betting_limit WHERE bt_market = '".$marketName."' and bt_game_type = '2D D'"));
+	$arrdiscountPercentage2dd = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '2D D' and g_market_name = '".$marketName."'"));
+	if($arrdiscountPercentage2dd['g_kei'] == '0') {
+		$discountPercentage2dd = $arrdiscountPercentage2dd['g_discount'];
+	} else {
+		$discountPercentage2dd = $arrdiscountPercentage2dd['g_kei'];
+	}
 	$minbetAmount2dd = $arrBettingLimit2dd['bt_min_bet_amount'];
 	$maxbetAmount2dd = $arrBettingLimit2dd['bt_max_bet_amount'];
 	if(!isset($minbetAmount2dd)) {
@@ -77,6 +101,12 @@
 	}
 	
 	$arrBettingLimit2dt = mysql_fetch_array(mysql_query("SELECT * FROM lottery_betting_limit WHERE bt_market = '".$marketName."' and bt_game_type = '2D T'"));
+	$arrdiscountPercentage2dt = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '2D T' and g_market_name = '".$marketName."'"));
+	if($arrdiscountPercentage2dt['g_kei'] == '0') {
+		$discountPercentage2dt = $arrdiscountPercentage2dt['g_discount'];
+	} else {
+		$discountPercentage2dt = $arrdiscountPercentage2dt['g_kei'];
+	}
 	$minbetAmount2dt = $arrBettingLimit2dt['bt_min_bet_amount'];
 	$maxbetAmount2dt = $arrBettingLimit2dt['bt_max_bet_amount'];
 	
@@ -88,6 +118,12 @@
 	}
 	
 	$arrBettingLimit2db = mysql_fetch_array(mysql_query("SELECT * FROM lottery_betting_limit WHERE bt_market = '".$marketName."' and bt_game_type = '2D B'"));
+	$arrdiscountPercentage2db = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '2D B' and g_market_name = '".$marketName."'"));
+	if($arrdiscountPercentage2db['g_kei'] == '0') {
+		$discountPercentage2db = $arrdiscountPercentage2db['g_discount'];
+	} else {
+		$discountPercentage2db = $arrdiscountPercentage2db['g_kei'];
+	}
 	$minbetAmount2db = $arrBettingLimit2db['bt_min_bet_amount'];
 	$maxbetAmount2db = $arrBettingLimit2db['bt_max_bet_amount'];
 	if(!isset($minbetAmount2db)) {
@@ -99,36 +135,106 @@
 	
 	
 	if(isset($_REQUEST['key']) && $_REQUEST['key'] == 'purchase4d') {
-		//echo "<pre>"; print_r($_REQUEST); exit;
-		
-		$totalPAmount = $_REQUEST['totalPay'];
-		$modTotalPAmount = str_replace( ',', '', $totalPAmount);
-		//echo $modTotalPAmount;
 		$availableBalace = $_REQUEST['avlbl_blnce'];
-		
-		
-		$modTotalPAmount = $modTotalPAmount * 1 ;
 		$availableBalace = $availableBalace * 1;
+		
+		/* Form input from the given code */
+		$data = str_replace(' ', '', $_REQUEST['macau']);
+		
+		$market = $_REQUEST['market'];
+		$period = $_REQUEST['period'];
+		$gameType = $_REQUEST['gametype'];
+					
+		$inputs = [];
+		$modTotalPAmount = 0;
+		$path = explode('&msg=', $_SERVER['REQUEST_URI']);
+		$url = $path[0];
+		$rows = explode(',', trim($data));
+		if(count($rows) > 0 && count($rows) <= 10) {
+			foreach($rows as $row) {
+				$columns = explode('#', $row);
+				//Check row value should contain both lottery no and bet amount
+				if(count($columns) == 2) {
+					$lotteryNos = explode('*', $columns[0]);
+					$betAmount = $columns[1];
+					$is_amount = filter_var($betAmount, FILTER_VALIDATE_INT);
+					//Bet amount should be an integer
+					if($is_amount) {
+						//Bet amount should be greater than or equal to minimum bet amount
+						if($betAmount >= $minbetAmount) {
+							foreach($lotteryNos as $lottery) {
+								//lottery number should be an integer
+								if(ctype_digit(strval($lottery))) {
+									//Lottery number with in 9
+									$duplicate = str_split($lottery);
+									$lotteryLength = strlen($lottery);
+									if($lotteryLength <= 4)) {
+										switch($lotteryLength) {
+											case 4:
+												$arrdiscountPercentage = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '4D' and g_market_name = '".$market."'"));
+											case 2:	
+												$arrdiscountPercentage = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '4D' and g_market_name = '".$market."'"));
+										}
+										/* Calculate the discount value */
+										if($arrdiscountPercentage['g_kei'] == '0') {
+											$discountPercentage = $arrdiscountPercentage['g_discount'];
+										} else {
+											$discountPercentage = $arrdiscountPercentage['g_kei'];
+										}
+										$discount = ($betAmount*$discountPercentage)/100;
+										$paybleAmount = $betAmount - $discount;
+										$modTotalPAmount += $paybleAmount;
+										$inputs[] = array('lotteryNo' => $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
+										
+									} else {
+										header('Location:'.$url.'&msg=Invalid code!');
+										exit();
+									}
+								} else {
+									
+									header('Location:'.$url.'&msg=Inalid code!');
+									exit();
+								}
+							}
+						} else {
+							header("Location:$url&msg=Min bet amount $minbetAmount");
+							exit();
+						}
+					} else {
+						header('Location:'.$url.'&msg=Invalid code!');
+						exit();
+					}
+				} else {
+					header('Location:'.$url.'&msg=Invalid code');
+					exit();
+				}
+			}
+		} else {
+			header('Location:'.$url.'&msg=maximun bet allowed 10');
+			exit();
+		}
+		//print_r($inputs);die;
+		
+		
 		//echo $availableBalace; exit;
 		date_default_timezone_set("Asia/Kuala_Lumpur");
 		$t=time();
+		
 		if($modTotalPAmount<$availableBalace) {
-			//echo "hellloooooo"; exit;
-			$c = count($_REQUEST['d1']);
-			for($i=0;$i<$c;$i++) {
+			foreach($inputs as $input) {
 				$category = $_REQUEST['market'];
 				$period = $_REQUEST['period'];
 				$gameType = $_REQUEST['gametype'][$i];
 				$digit = $_REQUEST['d1'][$i].$_REQUEST['d2'][$i].$_REQUEST['d3'][$i].$_REQUEST['d4'][$i]; 
-				$betAmount = $_REQUEST['bet_amount'][$i];
+				$betAmount = $input['betAmount'];
 				//echo $betAmount; exit;
 				$modBetAmount = str_replace( ',', '', $betAmount);
 				//echo $modBetAmount; exit;
-				$discount = $_REQUEST['discount_amount'][$i];
+				$discount = $input['discount'];
 				$modDiscount = str_replace( ',', '', $discount);
 				//echo $discount; 
 				//echo $modDiscount; exit;
-				$paybleAmount = $_REQUEST['pay_amount'][$i];
+				$paybleAmount = $input['paybleAmount'];
 				
 				$modPaybleAmount = str_replace( ',', '', $paybleAmount);
 				//echo $modPaybleAmount; exit;
@@ -173,10 +279,10 @@
 					'0')");
 				}
 			}
-			header("Location:confirm-purchase.php?market=".$marketName."&unique_key=".$t."&member_id=".$_SESSION['lottery']['memberid']);
+			header("Location:".$url."&msg=success");
 			exit();
 			} else {
-			header("Location:error_purchase.php");
+			header("Location:".$url."&msg=You don't have enough balance for purchasing lottery. Please deposit some amount to you account.");
 			exit();
 		}
 	}
@@ -185,346 +291,101 @@
 <html lang="en">
 	<head>
 		<?php require_once("includes/html_head.php");?>
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$('.checkBetAmount').maskNumber({integer: true});
-				function nextTab(that) {
-					var b = that.id.split('_');
-					if($.trim($(that).val())!='') {
-						switch(b[0]) {
-							case 'd1': { $("#d2_"+b[1]).focus(); break; }
-							case 'd2': { $("#d3_"+b[1]).focus(); break; }
-							case 'd3': { $("#d4_"+b[1]).focus(); break; }
-							case 'd4': { $("#betamount_"+b[1]).focus(); break; }
-						}
-					}
-				}
-				
-				
-				$(".input-width4d").keyup(function(){
-					nextTab(this);
-				});
-				
-				$(".checkLoto").blur(function(){
-					collectNumber(this);
-					autofillAmount(this);
-				});
-				
-				function collectNumber(that) {
-					var nextTextFieldId = $(that).parent().next().find('.GameT');
-					var nextTextFieldId2 = $(that).parent().next().next().find('.DiscountP');
-					var market = $("#marketn").val();
-					//console.log(market);
-					var loto_id = that.id;
-					//console.log(loto_id);
-					var lb = loto_id.split('_');
-					//console.log(lb);
-					//if($("#d1_"+lb[1]).val()!=""&&$("#d2_"+lb[1]).val()!=""&&$("#d3_"+lb[1]).val()!=""&$("#d4_"+lb[1]).val()!=""){
-					$.ajax({
-						type:'POST',
-						url:"fetch_gametype_discount_percentage_ajax.php",
-						data:"action=fetchGameType&market="+$("#marketn").val()+"&n1="+$("#d1_"+lb[1]).val()+"&n2="+$("#d2_"+lb[1]).val()+"&n3="+$("#d3_"+lb[1]).val()+"&n4="+$("#d4_"+lb[1]).val(),
-						success: function(result) {
-							var g = result.split('^');
-							nextTextFieldId.val(g[0]);
-							nextTextFieldId2.val(g[1]);
-						}
-					});
-					//}
-				}
-				
-				function calculateTotalBidAmount(){
-					var totalBedAmount = 0;
-					$(".checkBetAmount").each(function(key,elem) { 			
-						var inputBed = $(elem).val();
-						//var modInputBed = inputBed.replace(",","");  
-						var modInputBed = inputBed.replace(/,/g, '');
-						
-						if(modInputBed != '') {
-							totalBedAmount += parseInt(modInputBed);
-						}
-					});
-					$("#t_betamount").val(totalBedAmount);
-					$('#t_betamount').number( true, 0 );
-				}
-				
-				function calculateTotalDiscount() {
-					var totalDiscount = 0;
-					$(".checkDiscount").each(function(key,elem) {
-						var inputDiscount = $(elem).val();
-						
-						//var modInputDiscount = inputDiscount.replace(",","");  
-						var modInputDiscount = inputDiscount.replace(/,/g, '');
-						if(modInputDiscount != '') {
-							totalDiscount += parseInt(modInputDiscount);
-						}
-					});
-					$("#t_discount").val(totalDiscount);
-					$("#t_discount").number( true, 0 );
-				}
-				
-				function calculateTotalPaybleAmount() {
-					var totalPayble = 0;
-					$(".checkPaybleAmount").each(function(key,elem) {
-						var inputPaybleAmount = $(elem).val();
-						//var modInputPaybleAmount = inputPaybleAmount.replace(",",""); 
-						var modInputPaybleAmount = inputPaybleAmount.replace(/,/g, '');
-						
-						if(modInputPaybleAmount != '') {
-							totalPayble += parseInt(modInputPaybleAmount);
-						}
-					});
-					$("#t_paybleamount").val(totalPayble);
-					$("#t_paybleamount").number( true, 0 );
-				}
-				
-				function autofillAmount(that) {
-					var amountDefault = $("#bet_default").val();
-					var bet_id = that.id;
-					var bt = bet_id.split('_');
-					$("#betamount_"+bt[1]).val(amountDefault);
-				}
-				
-				$(".checkBetAmount").blur(function(){
-					var betamount = $(this).val();
-					//alert(betamount);
-					var modbetamount = betamount.replace(/\,/g , "");
-					//alert(modbetamount);
-					
-					
-					var betField = $(this).parent().find('.checkbetamount');
-					
-					var market = $("#marketn").val();
-					var prevTextFieldCat = $(this).parent().prev().prev().find('input').val();
-					//alert(prevTextFieldCat);
-					<?php if(isset($minbetAmount4d) && $minbetAmount4d!=0) {?>
-						if(prevTextFieldCat == "4D" && modbetamount < <?php echo $minbetAmount4d?>) {
-							alert("Minimum Bet Amount is <?php echo $minbetAmount4d?>");
-						}
-					<?php }?>
-					<?php if(isset($maxbetAmount4d) && $maxbetAmount4d!=0) {?>
-						if(prevTextFieldCat == "4D" && modbetamount > <?php echo $maxbetAmount4d?>) {
-							alert("Maximum Bet Amount is <?php echo $maxbetAmount4d?>");
-						}
-					<?php }?>
-					<?php if(isset($minbetAmount3d) && $minbetAmount3d!=0) {?>
-						if(prevTextFieldCat == "3D" && modbetamount < <?php echo $minbetAmount3d?>) {
-							alert("Minimum Bet Amount is <?php echo $minbetAmount3d?>");
-						}
-					<?php }?>
-					<?php if(isset($maxbetAmount3d) && $maxbetAmount3d!=0) {?>
-						if(prevTextFieldCat == "3D" && modbetamount > <?php echo $maxbetAmount3d?>) {
-							alert("Maximum Bet Amount is <?php echo $maxbetAmount3d?>");
-						}
-					<?php }?>
-					<?php if(isset($minbetAmount2d) && $minbetAmount2d!=0) {?>
-						if(prevTextFieldCat == "2D" && modbetamount < <?php echo $minbetAmount2d?>) {
-							alert("Minimum Bet Amount is <?php echo $minbetAmount2d?>");
-						}
-					<?php }?>
-					<?php if(isset($maxbetAmount2d) && $maxbetAmount2d!=0) {?>
-						if(prevTextFieldCat == "2D" && modbetamount > <?php echo $maxbetAmount2d?>) {
-							alert("Maximum Bet Amount is <?php echo $maxbetAmount2d?>");
-						}
-					<?php }?>
-					<?php if(isset($minbetAmount2dd) && $minbetAmount2dd!=0) {?>
-						if(prevTextFieldCat == "2D D" && modbetamount < <?php echo $minbetAmount2dd?>) {
-							alert("Minimum Bet Amount is <?php echo $minbetAmount2dd?>");
-						}
-					<?php }?>
-					<?php if(isset($maxbetAmount2dd) && $maxbetAmount2dd!=0) {?>
-						if(prevTextFieldCat == "2D D" && modbetamount > <?php echo $maxbetAmount2dd?>) {
-							alert("Maximum Bet Amount is <?php echo $maxbetAmount2dd?>");
-						}
-					<?php }?>
-					<?php if(isset($minbetAmount2dt) && $minbetAmount2dt!=0) {?>
-						if(prevTextFieldCat == "2D T" && modbetamount < <?php echo $minbetAmount2dt?>) {
-							alert("Minimum Bet Amount is <?php echo $minbetAmount2dt?>");
-						}
-					<?php }?>
-					<?php if(isset($maxbetAmount2dt) && $maxbetAmount2dt!=0) {?>
-						if(prevTextFieldCat == "2D T" && modbetamount > <?php echo $maxbetAmount2dt?>) {
-							alert("Maximum Bet Amount is <?php echo $maxbetAmount2dt?>");
-						}
-					<?php }?>
-					<?php if(isset($minbetAmount2db) && $minbetAmount2db!=0) {?>
-						if(prevTextFieldCat == "2D B" && modbetamount < <?php echo $minbetAmount2db?>) {
-							alert("Minimum Bet Amount is <?php echo $minbetAmount2db?>");
-						}
-					<?php }?>
-					<?php if(isset($maxbetAmount2db) && $maxbetAmount2db!=0) {?>
-						if(prevTextFieldCat == "2D B" && modbetamount > <?php echo $maxbetAmount2db?>) {
-							alert("Maximum Bet Amount is <?php echo $maxbetAmount2db?>");
-						}
-					<?php }?>
-					
-					//var prevTextFieldDiscount = $(this).parent().prev().find('input').val();
-					var nextTextDiscount = $(this).parent().next().find(':text');
-					var nextTextPrice = $(this).parent().next().next().find(':text');
-					//if(betamount>=<?php echo $minbetAmount?> && betamount<=<?php echo $maxbetAmount?>) {
-					$.ajax({
-						type:'POST',
-						url:"fetch_gametype_discount_percentage_ajax.php",
-						data:"action=fetchdiscountPrice&gameTpe="+prevTextFieldCat+"&betamount="+modbetamount+"&market="+market,
-						success: function(result) {
-							//alert(result);
-							var p = result.split('^');
-							nextTextDiscount.val(p[2]);
-							nextTextPrice.val(p[3]);
-							calculateTotalBidAmount();
-							calculateTotalDiscount();
-							calculateTotalPaybleAmount();
-						}
-					});
-					
-					//}
-					
-				});
-			});
-		</script>
 	</head>
 	<body>
-		<?php require_once("includes/header.php");?>
-		<!--end of page head!-->
-		
-		<div class="container-fluid main-body-area  menu-padding">
-			<div class="container">
-				<div class="col-md-12  scroll-text-area  rdc-padding">
-					<div class="col-md-2 arrow-right">
-						<p style="margin-top:25px; color:#fff;">Information</p>
-					</div>
-					<div class="col-md-10 scr-pd-left">
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor Aenean massa.</p>
-					</div>
-				</div>
-				<!--Start of game Page-->
-				<div class="col-md-12 mrg-top-20 game-page-area" >
-					<?php require_once("includes/left_panel_game.php");?>
-					<?php $availableBalance = $remainingBalance + $winSum; ?>
-					<!--end-of col-md-3-->
-					<div class="col-md-9 rdc-padding">
-						<div class="information-page-area">
-							<?php require_once("includes/top_game_category.php"); ?>
-							
-							<!--end-of header-->
-							<div  class="clear"></div>
-							<div  class="col-md-12 mrg-top-20">
-								<div class="game-body">
-									<h1>4D, 3D, 2D Front / Middle / Rear<br>
-									<small style="font-size:14px;">Guessing 4D, 3D, 2D Front / Middle / Rear.</small></h1>
-									<div class="alternative-area">
-										<p> 
-											<span class="join-text">
-												<a href="bolak_balik.php?market=<?php echo $marketName;?>">Bolak Balik</a>
-											</span> 
-											<span style="color:#ff0202"> |</span> 
-											<span class="join-text"><a href="bbcampuran.php?market=<?php echo $marketName;?>">BB Campuran / 4D SET</a></span> 
-											<span style="color:#ff0202"> |</span> 
-											<span class="join-text"><a href="quick2d.php?market=<?php echo $marketName;?>">QUICK 2D </a></span> 
-										</p>
-									</div>
-									<!--end-of alternative-area-->
-									
-									<div class="col-md-12 " style="border-bottom: 1px dotted #1B1C21;">
-										<p class="pull-left">Period : <?php echo $period;?>&nbsp;(<?php echo $marketName;?>)</p>
-										<p class="pull-right">Bet Default:<span style="margin-left:10px;">
-											<input name="betdefault" type="text" id="bet_default">
-										</span></p>
-									</div>
-									<!--end-of col-md-12-->
-									
-									<div class="col-md-12 mrg-top-20 ">
-										<form role="form" name="form4d" id="form4d" action="" method="POST">
-											<input type="button" name="simpan" class="game-more-btn pull-right" onclick = this.form.submit(); value="SAVE">
-											<input type="hidden" name="market" id="marketn" value="<?php echo $marketName;?>">
-											<input type="hidden" name="avlbl_blnce" value="<?php echo $availableBalance;?>">
-											<input type="hidden" name="period" value="<?php echo $period; ?>">
-											<input type="hidden" name="key" value="purchase4d">
-											
-											<div class="table-responsive">
-												<table class="table table-bordered">
-													<thead>
-														<tr>
-															<th>No</th>
-															<th style="width:260px;">CRUSH</th>
-															<th style="width:60px;" >GAME</th>
-															<th>DISC%</th>
-															<th>BET</th>
-															<th>DISCOUNT</th>
-															<th>PAY</th>
-														</tr>
-													</thead>
-													<tbody>
-														<?php for($j=1; $j<21; $j++) {?>
-															<tr>
-																<td><?php echo $j;?></td>
-																<td>
-																	<input type="text" class="form-control input-width4d checkLoto" name="d1[]" id="d1_<?php echo $j?>" maxlength="1">
-																	<input type="text" class="form-control input-width4d checkLoto" name="d2[]" id="d2_<?php echo $j?>" maxlength="1">
-																	<input type="text" class="form-control input-width4d checkLoto" name="d3[]" id="d3_<?php echo $j?>" maxlength="1">
-																	<input type="text" class="form-control input-width4d checkLoto" name="d4[]" id="d4_<?php echo $j?>" maxlength="1">
-																</td>
-																<td><input type="text" class="form-control input-width GameT" name="gametype[]" id="gametype_<?php echo $j?>" readonly style="color:#F00;"></td>
-																<td><input type="text" class="form-control input-width DiscountP" name="dispercentage[]" id="dispercent_<?php echo $j?>" readonly style="color:#F00;"></td>
-																<td><input type="text" class="form-control checkBetAmount" name="bet_amount[]" id="betamount_<?php echo $j?>" data-thousands="," style="width:100px;"></td>
-																<td><input type="text" class="form-control checkDiscount" name="discount_amount[]" id="discount_amount_<?php echo $j?>" readonly="readonly"></td>
-																<td><input type="text" class="form-control checkPaybleAmount" name="pay_amount[]" id="pay_amount_<?php echo $j?>" readonly="readonly" style="width:90px;"></td>
-															</tr>
-														<?php }?>
-														<tr style="background:#333333; color:#FFFFFF">
-															<td colspan="4" align="center" style="border:none;">Total</td>
-															<td style="border:none;"><input type="text" class="form-control" id="t_betamount"></td>
-															<td style="border:none;"><input type="text" class="form-control" id="t_discount"></td>
-															<td style="border:none;"><input type="text" class="form-control" name="totalPay"id="t_paybleamount"></td>
-														</tr>
-													</tbody>
-												</table>
-												<div class="col-md-12">
-													<input type="button" name="simpan" class="game-more-btn pull-right" onclick = this.form.submit(); value="SAVE">
-												</div>
-											</div>
-											<!-------end of table------>
-										</form>
-										<!--<div class="col-md-12">
-											<p style="color: #121217;"><span style="width:120px; float:left; ">Discount </span><span style="width:15px; float:left;">:</span> 0% + KEI</p>
-											<p style="color: #121217;"><span style="width:120px; float:left;">Gift </span><span style="width:15px; float:left;">:</span>1x plus Capital.</p>
-											<p style="color: #121217;"><span style="width:120px; float:left;">Min BET </span><span style="width:15px; float:left;">:</span>10,000</p>
-											<p style="color: #121217;"><span style="width:120px; float:left; ">Max BET </span><span style="width:15px; float:left;">:</span>20,000,000</p>
-											<p style="color: #121217;"><span style="width:120px; float:left; ">BET Multiples </span><span style="width:15px; float:left;">:</span>10,000</p>
-										</div>-->
-										<!--<div class="col-md-12">
-											<p>- Please check back BET, Discounts, and multiplication Your victory. </p>
-											<p>- This bet is SAH and Irrevocable </p>
-											<p>- Betting considered deviant, Hack, Inject, will be canceled and DELETE without Confirmation. </p>
-											<p>- If an error occurs BET, please immediately confirm to CS duty </p>
-											<p>- Errors were confirmed after PERIOD in the lot will not be served. </p>
-										</div>-->
-										<?php echo $arr4dDetails['cms_page_details']; ?>
-										<!--end-of col-md-12--> 
-									</div>
-									<!--end-of col-md-12-->
-									<div class="clear"></div>
-								</div>
-								<!--end-of game-body--> 
-							</div>
-							<div class="clear"></div>
-						</div>
-						<!--end-of information-page-area--> 
-					</div>
-					<!--end-of col-md-9--> 
-					
-					<!--end of col-md-12-->
-					<div class="clear"></div>
-				</div>
-				<!--end of game-area-->
-				
-				<?php require_once("includes/footer.php");?>
-				<!--end-of col-md-12--> 
-				
+		<?php require_once("includes/navigation.php");?>
+		<div class="container-fluid">
+		<a href="my-account.php" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">HOME</a>
+		---
+		<a href="games.php" class="btn btn-danger btn-xs" style="margin-bottom: 5px;">GAMES</a> 
+		<br /><br />
+		<?php if(isset($_REQUEST['msg'])) { ?>
+			<?php 
+			$msg = $_REQUEST['msg'];
+			if($msg == 'success') {
+			?>
+				<div class="alert alert-success" >Thank you for purchasing the lottery ticket from Lottery.com</div>
+			<?php } else { ?>
+				<div class="alert alert-danger" ><?php echo $_REQUEST['msg']; ?></div>
+		<?php } } ?>
+		<?php $availableBalance = $remainingBalance + $winSum; ?>
+		TARUHAN - 4D,3D,2D
+		<br />
+		PERIOD : <?php echo $period;?><hr />
+		<form class="form-horizontal" method="post" action="" name="frm_shio">
+			<input type="hidden" name="market" id="marketn" value="<?php echo $marketName;?>">
+			<input type="hidden" name="avlbl_blnce" value="<?php echo $availableBalance;?>">
+			<input type="hidden" name="period" value="<?php echo $period; ?>">
+			<input type="hidden" name="key" value="purchase4d">
+			<div class="form-group"> 
+				<label class="col-xs-4 control-label">Min bet</label> 
+				<div class="col-xs-8">
+					<p class="form-control-static">: 
+					4D <small> = </small>Rp. <?php echo $minbetAmount4d; ?> ,
+					3D <small> = </small>Rp. <?php echo $minbetAmount3d; ?>  ,
+					2D <small> = </small>Rp. <?php echo $minbetAmount2d; ?> ,
+					2D D <small> = </small>Rp. <?php echo $minbetAmount2dd; ?> ,
+					2D T <small> = </small>Rp. <?php echo $minbetAmount2dt; ?> ,
+					2D B <small> = </small>Rp. <?php echo $minbetAmount2db; ?>
+				</p>
+				</div> 
 			</div>
-			<!--end-of container--> 
-		</div>
-		<!--end-of container-fluid main-body-area-->
-		
+			<div class="form-group"> 
+				<label class="col-xs-4 control-label">Max bet</label> 
+				<div class="col-xs-8">
+				<p class="form-control-static">: 
+					4D <small> = </small>Rp. <?php echo $maxbetAmount4d; ?> ,
+					3D <small> = </small>Rp. <?php echo $maxbetAmount3d; ?>  ,
+					2D <small> = </small>Rp. <?php echo $maxbetAmount2d; ?> ,
+					2D D <small> = </small>Rp. <?php echo $maxbetAmount2dd; ?> ,
+					2D T <small> = </small>Rp. <?php echo $maxbetAmount2dt; ?> ,
+					2D B <small> = </small>Rp. <?php echo $maxbetAmount2db; ?>
+				</p>
+				</div> 
+			</div>
+			<?php/* <div class="form-group"> 
+				<label class="col-xs-4 control-label">Kelipatan</label> 
+				<div class="col-xs-8">
+				<p class="form-control-static">: 
+					4D <small> = </small>Rp. <?php echo ; ?> ,
+					3D <small> = </small>Rp. <?php echo ; ?> ,
+					2D <small> = </small>Rp. <?php echo ; ?>
+					2D D <small> = </small>Rp. <?php echo ; ?> ,
+					2D T <small> = </small>Rp. <?php echo ; ?> ,
+					2D B <small> = </small>Rp. <?php echo ; ?> ,
+				</p>
+				</div> 
+			</div> */?>
+			<div class="form-group"> 
+				<label class="col-xs-4 control-label">Discount</label> 
+				<div class="col-xs-8">
+					<p class="form-control-static">: 
+					4D <small> = </small><?php echo $discountPercentage4d; ?> % ,
+					3D <small> = </small><?php echo $discountPercentage3d; ?> % ,
+					2D <small> = </small><?php echo $discountPercentage2d; ?> % ,
+					2D D <small> = </small><?php echo $discountPercentage2dd; ?> % ,
+					2D T <small> = </small><?php echo $discountPercentage2dt; ?> % ,
+					2D B <small> = </small><?php echo $discountPercentage2db; ?> %
+					</p>
+				</div> 
+			</div>
+			<hr />
+			<div class="form-group"> 
+				<small><mark>DONT REFRESH THIS PAGE & Max bet 120 Record</mark></small><br />
+				Contoh Benar : 1234*234*34#1000  <small>atau </small>1234#1000,234*34#5000 <small>atau</small>12*21*11#1000,33*32#1000,234*432#1000,1234*4321#1000<br />
+			</div>
+			<hr />
+			<div class="form-group"> 
+				<label class="col-xs-4 control-label">BET COLOK BEBAS</label> 
+				<div class="col-xs-8"><input type="text" class="form-control" placeholder="BET 4D,3D,2D" name="dimensi" id="dimensi" value="" > </div> 
+			</div>
+			<div class="form-group"> 
+				<div class="col-sm-12">
+				<input type="submit" class="btn btn-warning form-control" name="submit" id="submit" value="BELI" onclick="return confirm('PROSES TARUHAN INI???')"/> 
+				</div> 
+			</div>
+		</form></div>
+		<hr/>			
+		<?php include("includes/footer.php");?>
 	</body>
-</html>
+</html>		

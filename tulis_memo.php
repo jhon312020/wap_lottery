@@ -67,5 +67,7 @@
   	</div>
 </form>
 </div>
+<hr/>
+	<?php include("includes/footer.php");?>
 	</body>
 </html>
