@@ -174,7 +174,7 @@
 					'".$purchaseDate."',
 					'".$purchaseTime."',
 					'".$t."',
-					'0',
+					'1',
 					'0')");
 			}
 			header("Location:".$url."&msg=success");
