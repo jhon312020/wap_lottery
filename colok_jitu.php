@@ -214,7 +214,7 @@
 			<?php echo $arrColokJituDetails['cms_page_details']; ?>
 			<hr />
 			<div class="form-group"> 
-				<small><mark>DONT REFRESH THIS PAGE  & Max bet 120 Record</mark></small><br />
+				<small><mark>DONT REFRESH THIS PAGE  & Max bet 10 Record</mark></small><br />
 				Contoh Bet : 1#10000  <small>atau </small>0*3#10000 <small>atau </small> 2*1#10000,5#20000
 			</div>
 			<hr />

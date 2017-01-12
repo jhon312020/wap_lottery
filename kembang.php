@@ -241,7 +241,7 @@
 			</div>
 			<hr/>
 			<div class="form-group"> 
-				<small><mark>DONT REFRESH THIS PAGE  & Max bet 120 Record</mark></small><br />
+				<small><mark>DONT REFRESH THIS PAGE  & Max bet 10 Record</mark></small><br />
 				Contoh Bet : Depan#10000  <small>atau </small>Tengah*Belakang#10000 <small>atau </small> Depan*Tengah#10000,Belakang#20000
 			</div>
 			<hr />
