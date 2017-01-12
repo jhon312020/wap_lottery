@@ -81,30 +81,33 @@
 							$is_amount = filter_var($betAmount, FILTER_VALIDATE_INT);
 							//Bet amount should be an integer
 							if($is_amount) {
-								//Bet amount should be greater than or equal to minimum bet amount
-								if($betAmount >= $minbetAmount) {
-									foreach($crushPositions as $crushPosition) {
-										//lottery number should be an integer
-										if(in_array($crushPosition, $crushList)) {
-											/* Calculate the discount value */
-											$position = $crushPosition;
-											$kei = $discountKey[$inputName][strtolower($position)];
-											if($kei < 0){
-												$discount = ($betAmount * $kei)/100;
-											} else{
-												$discount = 0;
-											}	
-											$paybleAmount = $betAmount - $discount;
-											$modTotalPAmount += $paybleAmount;
-											$inputs[] = array('gameType' => strtoupper($inputName), 'gamePosition' => strtoupper($position), 'betAmount' => $betAmount, 'discount' => abs($discount), 'paybleAmount' => $paybleAmount);
-										} else {
-											header('Location:'.$url.'&msg=Inalid code!');
-											exit();
-										}
-									}
-								} else {
+								//Check bet amount with minimum and maximum bet amount
+								if($minbetAmount && $betAmount < $minbetAmount) {
 									header("Location:$url&msg=Min bet amount $minbetAmount");
 									exit();
+								}
+								if($maxbetAmount && $betAmount > $maxbetAmount) {
+									header("Location:$url&msg=Max bet amount $maxbetAmount");
+									exit();
+								}
+								foreach($crushPositions as $crushPosition) {
+									//lottery number should be an integer
+									if(in_array($crushPosition, $crushList)) {
+										/* Calculate the discount value */
+										$position = $crushPosition;
+										$kei = $discountKey[$inputName][strtolower($position)];
+										if($kei < 0){
+											$discount = ($betAmount * $kei)/100;
+										} else{
+											$discount = 0;
+										}	
+										$paybleAmount = $betAmount - $discount;
+										$modTotalPAmount += $paybleAmount;
+										$inputs[] = array('gameType' => strtoupper($inputName), 'gamePosition' => strtoupper($position), 'betAmount' => $betAmount, 'discount' => abs($discount), 'paybleAmount' => $paybleAmount);
+									} else {
+										header('Location:'.$url.'&msg=Inalid code!');
+										exit();
+									}
 								}
 							} else {
 								header('Location:'.$url.'&msg=Invalid code!');

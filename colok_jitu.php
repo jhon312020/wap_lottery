@@ -70,33 +70,36 @@
 							$is_amount = filter_var($betAmount, FILTER_VALIDATE_INT);
 							//Bet amount should be an integer
 							if($is_amount) {
-								//Bet amount should be greater than or equal to minimum bet amount
-								if($betAmount >= $minbetAmount) {
-									foreach($lotteryNos as $lottery) {
-										//lottery number should be an integer
-										if(ctype_digit(strval($lottery))) {
-											//Lottery number with in 9
-											$duplicate = str_split($lottery);
-											if(strlen($lottery) == 1 && $lottery <= 9) {
-												/* Calculate the discount value */
-												$arrDiscount = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_market_name = '".$market."' and g_type = '".$gameType."'"));
-												$discountPercentage = $arrDiscount['g_discount'];	
-												$discount = ($betAmount*$discountPercentage)/100;
-												$paybleAmount = $betAmount - $discount;
-												$modTotalPAmount += $paybleAmount;
-												$inputs[] = array('lotteryPosition' => strtoupper($inputName), 'lotteryNo' => (int) $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
-											} else {
-												header('Location:'.$url.'&msg=Lottery number less than or equal to 9');
-												exit();
-											}
-										} else {
-											header('Location:'.$url.'&msg=Inalid code!');
-											exit();
-										}
-									}
-								} else {
+								//Check bet amount with minimum and maximum bet amount
+								if($minbetAmount && $betAmount < $minbetAmount) {
 									header("Location:$url&msg=Min bet amount $minbetAmount");
 									exit();
+								}
+								if($maxbetAmount && $betAmount > $maxbetAmount) {
+									header("Location:$url&msg=Max bet amount $maxbetAmount");
+									exit();
+								}
+								foreach($lotteryNos as $lottery) {
+									//lottery number should be an integer
+									if(ctype_digit(strval($lottery))) {
+										//Lottery number with in 9
+										$duplicate = str_split($lottery);
+										if(strlen($lottery) == 1 && $lottery <= 9) {
+											/* Calculate the discount value */
+											$arrDiscount = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_market_name = '".$market."' and g_type = '".$gameType."'"));
+											$discountPercentage = $arrDiscount['g_discount'];	
+											$discount = ($betAmount*$discountPercentage)/100;
+											$paybleAmount = $betAmount - $discount;
+											$modTotalPAmount += $paybleAmount;
+											$inputs[] = array('lotteryPosition' => strtoupper($inputName), 'lotteryNo' => (int) $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
+										} else {
+											header('Location:'.$url.'&msg=Lottery number less than or equal to 9');
+											exit();
+										}
+									} else {
+										header('Location:'.$url.'&msg=Inalid code!');
+										exit();
+									}
 								}
 							} else {
 								header('Location:'.$url.'&msg=Invalid code!');

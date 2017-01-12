@@ -71,31 +71,34 @@
 					$is_amount = filter_var($betAmount, FILTER_VALIDATE_INT);
 					//Bet amount should be an integer
 					if($is_amount) {
-						//Bet amount should be greater than or equal to minimum bet amount
-						if($betAmount >= $minbetAmount) {
-							foreach($crushPositions as $crushPosition) {
-								//lottery number should be an integer
-								if(in_array($crushPosition, $crushList)) {
-									/* Calculate the discount value */
-									$position = strtolower($crushPosition);
-									$arrDiscount = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_market_name = '".$market."' and g_type = '".$gameType."' and g_name = '".$position."'"));
-									$discountPercentage = $arrDiscount['g_kei'];	
-									if($discountPercentage < 0){
-										$discount = abs(($betAmount*$discountPercentage)/100);
-									} else{
-										$discount = 0;
-									}
-									$paybleAmount = $betAmount - $discount;
-									$modTotalPAmount += $paybleAmount;
-									$inputs[] = array('crushPosition' => $position, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
-								} else {
-									header('Location:'.$url.'&msg=Inalid code!');
-									exit();
-								}
-							}
-						} else {
+						//Check bet amount with minimum and maximum bet amount
+						if($minbetAmount && $betAmount < $minbetAmount) {
 							header("Location:$url&msg=Min bet amount $minbetAmount");
 							exit();
+						}
+						if($maxbetAmount && $betAmount > $maxbetAmount) {
+							header("Location:$url&msg=Max bet amount $maxbetAmount");
+							exit();
+						}
+						foreach($crushPositions as $crushPosition) {
+							//lottery number should be an integer
+							if(in_array($crushPosition, $crushList)) {
+								/* Calculate the discount value */
+								$position = strtolower($crushPosition);
+								$arrDiscount = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_market_name = '".$market."' and g_type = '".$gameType."' and g_name = '".$position."'"));
+								$discountPercentage = $arrDiscount['g_kei'];	
+								if($discountPercentage < 0){
+									$discount = abs(($betAmount*$discountPercentage)/100);
+								} else{
+									$discount = 0;
+								}
+								$paybleAmount = $betAmount - $discount;
+								$modTotalPAmount += $paybleAmount;
+								$inputs[] = array('crushPosition' => $position, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
+							} else {
+								header('Location:'.$url.'&msg=Inalid code!');
+								exit();
+							}
 						}
 					} else {
 						header('Location:'.$url.'&msg=Invalid code!');
