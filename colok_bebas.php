@@ -182,6 +182,9 @@
 					'0')");
 					
 			} 
+			
+			include("calculate_referral.php");
+			
 			header("Location:".$url."&msg=success");
 			exit();
 			} else {
