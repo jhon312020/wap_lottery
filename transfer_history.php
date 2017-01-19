@@ -269,7 +269,7 @@ $qry = mysql_query("
 			'WAP Tarik Dana' as p_information 
 			FROM lottery_amount_deposit 
 			WHERE deposit_mem_id = '".$mem_id."' 
-			and deposit_status=1 
+			and deposit_status = '1' 
 			and DATE(deposit_date_time) between '".$to_date."' and '".$from_date."')
 			
 			union all 
@@ -285,7 +285,7 @@ $qry = mysql_query("
 			'WAP Dorong Dana' as p_information 
 			FROM lottery_amount_withdraw 
 			WHERE w_from_mem_id = '".$mem_id."' 
-			and w_status=1 
+			and w_status = '1' 
 			and DATE(w_date_time) between '".$to_date."' and '".$from_date."')
 
 			union all 
