@@ -59,7 +59,7 @@
 		$path = explode('&msg=', $_SERVER['REQUEST_URI']);
 		$url = $path[0];
 		$rows = explode(',', trim($data));
-		if(count($rows) > 0 && count($rows) <= 10) {
+		if(count($rows) > 0 && count($rows) <= 120) {
 			foreach($rows as $row) {
 				$columns = explode('#', $row);
 				//Check row value should contain both lottery no and bet amount
@@ -220,7 +220,7 @@
 			<?php echo $arrMacauDetails['cms_page_details']; ?>
 			<hr />
 			<div class="form-group"> 
-				<small><mark>DONT REFRESH THIS PAGE  & Max bet 10 Record</mark></small><br />
+				<small><mark>DONT REFRESH THIS PAGE  & Max bet 120 Record</mark></small><br />
 				<small>Bet 1 Tidak Boleh sama dengan Bet 2</small><br />
 				Contoh Benar : 12#10000  <small>atau </small>02*03#10000 <small>atau </small> 02*03#10000,05#20000<br />
 				<font color="#FF0000"> Contoh Salah : 11#10000  <small>atau </small>22*03#10000 <small>atau </small> 02*03#10000,00#10000</font><br />

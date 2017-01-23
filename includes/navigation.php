@@ -1,3 +1,9 @@
+<style>
+mark {
+	color: #000;
+	background: #ff0;
+}
+</style>
 <?php
 	session_start();
 	require_once("includes/check-authentication.php");

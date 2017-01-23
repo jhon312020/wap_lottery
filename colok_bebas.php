@@ -60,7 +60,7 @@
 		$path = explode('&msg=', $_SERVER['REQUEST_URI']);
 		$url = $path[0];
 		$rows = explode(',', trim($data));
-		if(count($rows) > 0 && count($rows) <= 10) {
+		if(count($rows) > 0 && count($rows) <= 120) {
 			foreach($rows as $row) {
 				$columns = explode('#', $row);
 				//Check row value should contain both lottery no and bet amount
@@ -227,7 +227,7 @@
 			<?php echo $arrColokbebasCMS['cms_page_details']; ?>
 			<hr />
 			<div class="form-group"> 
-					<small><mark>DONT REFRESH THIS PAGE  & Max bet 10 Record</mark></small><br />
+					<small><mark>DONT REFRESH THIS PAGE  & Max bet 120 Record</mark></small><br />
 				Example Correct : 1#10000  <small>atau </small>0*3#10000 <small>atau </small> 2*0#10000,5#3000<br />
 			</div>
 			<hr />

@@ -152,7 +152,7 @@
 		foreach($model_name as $inputName=>$inputValue) {
 			$rows = explode(',', trim($inputValue));
 			if(trim($inputValue) != '') {
-				if(count($rows) > 0 && count($rows) <= 10) {
+				if(count($rows) > 0 && count($rows) <= 120) {
 					foreach($rows as $row) {
 						$columns = explode('#', $row);
 						//Check row value should contain both lottery no and bet amount
@@ -388,7 +388,7 @@
 			</div>
 			<hr />
 			<div class="form-group"> 
-				<small><mark>DONT REFRESH THIS PAGE & Max bet 10 Record</mark></small><br />
+				<small><mark>DONT REFRESH THIS PAGE & Max bet 120 Record</mark></small><br />
 				Contoh Bet : 12#10000  <small>atau </small>02*03#10000 <small>atau </small> 02*03#10000,05#15000
 			</div>
 			<hr />

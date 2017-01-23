@@ -61,7 +61,7 @@
 		$path = explode('&msg=', $_SERVER['REQUEST_URI']);
 		$url = $path[0];
 		$rows = explode(',', trim($data));
-		if(count($rows) > 0 && count($rows) <= 10) {
+		if(count($rows) > 0 && count($rows) <= 120) {
 			foreach($rows as $row) {
 				$columns = explode('#', $row);
 				//Check row value should contain both lottery no and bet amount
@@ -223,7 +223,7 @@
 			<?php echo $arrColokNagaDetails['cms_page_details']; ?>
 			<hr />
 			<div class="form-group"> 
-				<small><mark>DONT REFRESH THIS PAGE  & Max bet 10 Record</mark></small><br />
+				<small><mark>DONT REFRESH THIS PAGE  & Max bet 120 Record</mark></small><br />
 				<small>Bet 1,2,3 Tidak Boleh Sama</small><br />
 				Contoh Benar : 123#10000  <small>atau </small>012*013#10000 <small>atau </small> 012*123#10000,105#15000<br />
 				<font color="#FF0000"> Contoh Salah : 111#10000  <small>atau </small>222*103#10000 <small>atau </small> 012*113#10000,105#15000</font><br />

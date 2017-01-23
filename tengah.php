@@ -61,7 +61,7 @@
 		$url = $path[0];
 		$rows = explode(',', trim($data));
 		$crushList = array('Tengah', 'Tepi');
-		if(count($rows) > 0 && count($rows) <= 10) {
+		if(count($rows) > 0 && count($rows) <= 120) {
 			foreach($rows as $row) {
 				$columns = explode('#', $row);
 				//Check row value should contain both lottery no and bet amount
@@ -216,7 +216,7 @@
 			</div>
 			<hr />
 			<div class="form-group"> 
-				<small><mark>DONT REFRESH THIS PAGE  & Max bet 10 Record</mark></small><br />
+				<small><mark>DONT REFRESH THIS PAGE  & Max bet 120 Record</mark></small><br />
 				Contoh Benar : Tengah#10000  <small>atau </small>Tengah#10000,Tepi#20000 <small>atau </small> Tengah*Tepi#10000<br />
 			</div>
 			<hr />
