@@ -335,7 +335,7 @@ $qry = mysql_query("
 			'WAP Referral Amount' as p_information 
 			FROM lottery_referral_amount 
 			WHERE 
-			r_purchase_id in (select p_id from lottery_purchase where p_date between '".$to_date."' and '".$from_date."' and p_member_id = '".$mem_id."') and DATE(r_date) between '".$to_date."' and '".$from_date."' and p_member_id = '".$mem_id."') 
+			r_purchase_id in (select p_id from lottery_purchase where p_date between '".$to_date."' and '".$from_date."' and p_member_id = '".$mem_id."') and DATE(r_date) between '".$to_date."' and '".$from_date."') 
 			order by p_date asc");
 ?>
 <!DOCTYPE html>
