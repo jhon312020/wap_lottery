@@ -192,13 +192,13 @@
 											break;
 										case 2:	
 											$gameType = '2D';
-											$arrdiscountPercentage = mysql_fetch_array(mysql_query("SELECT * FROM lottery_game_setting WHERE g_type = '2D' and g_market_name = '".$market."'"));	
-											if($minbetAmount2d && $betAmount < $minbetAmount2d) {
-												header('Location:'.$url.'&msg=Minimum bet amount for 2D is '.$minbetAmount2d);
+											$discountPercentage = $discountPercentage2db;
+											if($minbetAmount2db && $betAmount < $minbetAmount2db) {
+												header('Location:'.$url.'&msg=Minimum bet amount for 2D is '.$minbetAmount2db);
 												exit();
 											}
-											if($maxbetAmount2d && $betAmount > $maxbetAmount2d) {
-												header('Location:'.$url.'&msg=Maximum bet amount for 2D is '.$maxbetAmount2d);
+											if($maxbetAmount2db && $betAmount > $maxbetAmount2db) {
+												header('Location:'.$url.'&msg=Maximum bet amount for 2D is '.$maxbetAmount2db);
 												exit();
 											}
 											break;
@@ -207,11 +207,13 @@
 											exit();
 											break;
 									}
-									/* Calculate the discount value */
-									if($arrdiscountPercentage['g_kei'] == '0') {
-										$discountPercentage = $arrdiscountPercentage['g_discount'];
-									} else {
-										$discountPercentage = $arrdiscountPercentage['g_kei'];
+									if($gameType != '2D') {
+										/* Calculate the discount value */
+										if($arrdiscountPercentage['g_kei'] == '0') {
+											$discountPercentage = $arrdiscountPercentage['g_discount'];
+										} else {
+											$discountPercentage = $arrdiscountPercentage['g_kei'];
+										}
 									}
 									$discount = ($betAmount*$discountPercentage)/100;
 									$paybleAmount = $betAmount - $discount;

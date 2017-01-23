@@ -5,7 +5,7 @@ $mem_id = $_SESSION['lottery']['memberid'];
 $period = $_REQUEST['period'];
 $date = $_REQUEST['date'];
 $gametype = $_REQUEST['gametype'];
-$qry = mysql_query("Select * from lottery_purchase where p_date = '".Date('Y-m-d', strtotime($date))."' and p_period = '".$period."' and p_gametype = '".$gametype."'");
+$qry = mysql_query("Select * from lottery_purchase where p_date = '".Date('Y-m-d', strtotime($date))."' and p_period = '".$period."' and p_gametype = '".$gametype."' and p_member_id = '".$mem_id."'");
 //echo "(Select * from lottery_purchase where p_date = '".Date('Y-m-d', strtotime($date))."' and p_period = '".$period."' and p_gametype = '".$gametype."'";die;
 
 ?>
