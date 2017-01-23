@@ -113,7 +113,7 @@
 			header('Location:'.$url.'&msg=maximun bet allowed 10');
 			exit();
 		}
-		print_r($inputs);die;
+		//print_r($inputs);die;
 		
 		if($modTotalPAmount<$availableBalace) {
 			foreach($inputs as $input) {
