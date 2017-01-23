@@ -241,7 +241,6 @@ $checkWin = mysql_query("SELECT * FROM lottery_purchase WHERE p_member_id = '".$
 	*/
 	
 
-
 $qry = mysql_query("
 			(Select GROUP_CONCAT(p_id) AS p_id, 
 			p_date, 

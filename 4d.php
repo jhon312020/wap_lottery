@@ -216,7 +216,7 @@
 									$discount = ($betAmount*$discountPercentage)/100;
 									$paybleAmount = $betAmount - $discount;
 									$modTotalPAmount += $paybleAmount;
-									$inputs[] = array('gameType' => $gameType, 'lotteryNo' => $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
+									$inputs[] = array('gameType' => '2D B', 'lotteryNo' => $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
 									
 								} else {
 									header('Location:'.$url.'&msg=Invalid code!');
