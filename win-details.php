@@ -28,7 +28,7 @@ $qry = mysql_query("Select * from lottery_purchase where p_date = '".Date('Y-m-d
 			<th STYLE="text-align:center">NO.</th>
 			<th STYLE="text-align:center">Tanggal</th>
 			<th STYLE="text-align:center">Game</th>
-			<!--<th STYLE="text-align:center">Tebak</th>-->
+			<th STYLE="text-align:center">Tebak</th>
 			<th STYLE="text-align:center">Posisi</th>
 			<th STYLE="text-align:center">STATUS</th>
 			<th STYLE="text-align:center">Taruhan</th>
@@ -150,7 +150,7 @@ $qry = mysql_query("Select * from lottery_purchase where p_date = '".Date('Y-m-d
 				<td class='history_detail_detail'><?php echo $i; ?></td>
 				<td class='history_detail_detail' ><?php echo Date('d M Y - H:i:s', strtotime($arrTransferHistory['p_date'].$arrTransferHistory['p_time']));?></td>
 				<td class='history_detail_detail' align='center'><?php echo $arrTransferHistory['p_gametype']; ?></td>
-				<!--<td class='history_detail_detail' align='center'>52</td>-->
+				<td class='history_detail_detail' align='center'><?php echo $arrTransferHistory['p_lottery_no']; ?></td>
 				<td class='history_detail_detail' align='center'><?php echo $arrTransferHistory['p_position']; ?></td>
 				<td class='history_detail_detail' align='center'><?php echo $arrTransferHistory['p_win_status'] == 'Y'?'Win':'Lost'; ?></td>
 				<td class='history_detail_detail' align=right><?php echo $arrTransferHistory['p_bet_amount']; ?></td>
@@ -162,7 +162,7 @@ $qry = mysql_query("Select * from lottery_purchase where p_date = '".Date('Y-m-d
 		</tbody>
 		<tfoot>
 			<tr class='bg-warning'>
-				<td colspan="5">TOTAL</td>
+				<td colspan="6">TOTAL</td>
 				<td align="right"><?php echo $totalBetAmount; ?></td>
 				<td align="right"></td>
 				<td align="right"><?php echo $totalPayableAmount; ?></td>
