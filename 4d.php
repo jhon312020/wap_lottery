@@ -191,7 +191,7 @@
 											}
 											break;
 										case 2:	
-											$gameType = '2D';
+											$gameType = '2D B';
 											$discountPercentage = $discountPercentage2db;
 											if($minbetAmount2db && $betAmount < $minbetAmount2db) {
 												header('Location:'.$url.'&msg=Minimum bet amount for 2D is '.$minbetAmount2db);
@@ -207,7 +207,7 @@
 											exit();
 											break;
 									}
-									if($gameType != '2D') {
+									if($gameType != '2D B') {
 										/* Calculate the discount value */
 										if($arrdiscountPercentage['g_kei'] == '0') {
 											$discountPercentage = $arrdiscountPercentage['g_discount'];
@@ -218,7 +218,7 @@
 									$discount = ($betAmount*$discountPercentage)/100;
 									$paybleAmount = $betAmount - $discount;
 									$modTotalPAmount += $paybleAmount;
-									$inputs[] = array('gameType' => '2D B', 'lotteryNo' => $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
+									$inputs[] = array('gameType' => $gameType, 'lotteryNo' => $lottery, 'betAmount' => $betAmount, 'discount' => $discount, 'paybleAmount' => $paybleAmount);
 									
 								} else {
 									header('Location:'.$url.'&msg=Invalid code!');
