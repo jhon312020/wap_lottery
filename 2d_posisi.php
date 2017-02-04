@@ -1,4 +1,5 @@
 <?php require_once("includes/head.php");
+ini_set('error_reporting', 1);
 	require_once("includes/check-authentication.php");
 	$arr4dDetails = mysql_fetch_array(mysql_query("SELECT * FROM lottery_cms_pages WHERE cms_id = '4'"));
 	$marketName = $_REQUEST['market'];
@@ -91,6 +92,7 @@
 	} else {
 		$discountPercentage2dd = $arrdiscountPercentage2dd['g_kei'];
 	}
+	
 	$minbetAmount2dd = $arrBettingLimit2dd['bt_min_bet_amount'];
 	$maxbetAmount2dd = $arrBettingLimit2dd['bt_max_bet_amount'];
 	if(!isset($minbetAmount2dd)) {
@@ -107,6 +109,7 @@
 	} else {
 		$discountPercentage2dt = $arrdiscountPercentage2dt['g_kei'];
 	}
+	
 	$minbetAmount2dt = $arrBettingLimit2dt['bt_min_bet_amount'];
 	$maxbetAmount2dt = $arrBettingLimit2dt['bt_max_bet_amount'];
 	
@@ -124,6 +127,7 @@
 	} else {
 		$discountPercentage2db = $arrdiscountPercentage2db['g_kei'];
 	}
+	
 	$minbetAmount2db = $arrBettingLimit2db['bt_min_bet_amount'];
 	$maxbetAmount2db = $arrBettingLimit2db['bt_max_bet_amount'];
 	if(!isset($minbetAmount2db)) {
@@ -185,7 +189,7 @@
 													break;
 												case '2dtengah':
 													$gameType = '2D T';
-													$discountPercentage = $arrBettingLimit2dt;
+													$discountPercentage = $discountPercentage2dt;
 													if($minbetAmount2dt && $betAmount < $minbetAmount2dt) {
 														header('Location:'.$url.'&msg=Minimum bet amount for 2D T is '.$minbetAmount2dt);
 														exit();
@@ -208,7 +212,7 @@
 													}
 													break;		
 											}
-											
+											//echo $betAmount.'------'.$discountPercentage;die;
 											$discount = ($betAmount*$discountPercentage)/100;
 											$paybleAmount = $betAmount - $discount;
 											$modTotalPAmount += $paybleAmount;
